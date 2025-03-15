@@ -1205,7 +1205,6 @@ async function init() {
       })
     });
     if (BD(framework)) return cancel();
-    console.log(framework);
     template = framework.name;
   }
   const root = path.join(cwd, targetDir);

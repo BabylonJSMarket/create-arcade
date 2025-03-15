@@ -165,7 +165,6 @@ async function init() {
       }),
     });
     if (prompts.isCancel(framework)) return cancel();
-    console.log(framework);
     template = framework.name;
   }
 
@@ -305,27 +304,6 @@ function pkgFromUserAgent(userAgent: string | undefined): PkgInfo | undefined {
     name: pkgSpecArr[0],
     version: pkgSpecArr[1],
   };
-}
-
-function setupReactSwc(root: string, isTs: boolean) {
-  // renovate: datasource=npm depName=@vitejs/plugin-react-swc
-  const reactSwcPluginVersion = "3.8.0";
-
-  editFile(path.resolve(root, "package.json"), (content) => {
-    return content.replace(
-      /"@vitejs\/plugin-react": ".+?"/,
-      `"@vitejs/plugin-react-swc": "^${reactSwcPluginVersion}"`,
-    );
-  });
-  editFile(
-    path.resolve(root, `vite.config.${isTs ? "ts" : "js"}`),
-    (content) => {
-      return content.replace(
-        "@vitejs/plugin-react",
-        "@vitejs/plugin-react-swc",
-      );
-    },
-  );
 }
 
 function editFile(file: string, callback: (content: string) => string) {

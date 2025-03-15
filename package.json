@@ -2,9 +2,9 @@
   "name": "@babylonjsmarket/create-arcade",
   "version": "0.0.1",
   "type": "module",
-  "main": "src/index.ts",
+  "main": "src/index.js",
   "bin": {
-    "create-arcade": "index.js"
+    "create-arcade": "dist/index.mjs"
   },
   "scripts": {
     "dev": "unbuild --stub",
