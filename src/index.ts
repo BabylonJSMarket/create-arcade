@@ -5,6 +5,8 @@ import path from "node:path";
 import spawn from "cross-spawn";
 import mri from "mri";
 import * as prompts from "@clack/prompts";
+import SETUP_OPTIONS from "./setup-options.ts";
+
 import colors from "picocolors";
 
 const {
@@ -43,257 +45,17 @@ Options:
   -t, --template NAME        use a specific template
 
 Available templates:
-${yellow    ('vanilla-ts     vanilla'  )}
-${green     ('vue-ts         vue'      )}
-${cyan      ('react-ts       react'    )}
-${cyan      ('react-swc-ts   react-swc')}
-${magenta   ('preact-ts      preact'   )}
-${redBright ('lit-ts         lit'      )}
-${red       ('svelte-ts      svelte'   )}
-${blue      ('solid-ts       solid'    )}
-${blueBright('qwik-ts        qwik'     )}`
+${yellow    ('empty-3d     empty-3d'  )}
+${green     ('fps      fps' )}
+${cyan      (''    )}
+${cyan      ('')}
+${magenta   (''   )}
+${redBright (''      )}
+${red       (''   )}
+${blue      (''    )}
+${blueBright(''     )}`
 
-type ColorFunc = (str: string | number) => string;
-type Framework = {
-  name: string;
-  display: string;
-  color: ColorFunc;
-  variants: FrameworkVariant[];
-};
-type FrameworkVariant = {
-  name: string;
-  display: string;
-  color: ColorFunc;
-  customCommand?: string;
-};
-
-const FRAMEWORKS: Framework[] = [
-  {
-    name: "vanilla",
-    display: "Vanilla",
-    color: yellow,
-    variants: [
-      {
-        name: "vanilla-ts",
-        display: "TypeScript",
-        color: blue,
-      },
-      {
-        name: "vanilla",
-        display: "JavaScript",
-        color: yellow,
-      },
-    ],
-  },
-  {
-    name: "vue",
-    display: "Vue",
-    color: green,
-    variants: [
-      {
-        name: "vue-ts",
-        display: "TypeScript",
-        color: blue,
-      },
-      {
-        name: "vue",
-        display: "JavaScript",
-        color: yellow,
-      },
-      {
-        name: "custom-create-vue",
-        display: "Official Vue Starter ↗",
-        color: green,
-        customCommand: "npm create vue@latest TARGET_DIR",
-      },
-      {
-        name: "custom-nuxt",
-        display: "Nuxt ↗",
-        color: greenBright,
-        customCommand: "npm exec nuxi init TARGET_DIR",
-      },
-    ],
-  },
-  {
-    name: "react",
-    display: "React",
-    color: cyan,
-    variants: [
-      {
-        name: "react-ts",
-        display: "TypeScript",
-        color: blue,
-      },
-      {
-        name: "react-swc-ts",
-        display: "TypeScript + SWC",
-        color: blue,
-      },
-      {
-        name: "react",
-        display: "JavaScript",
-        color: yellow,
-      },
-      {
-        name: "react-swc",
-        display: "JavaScript + SWC",
-        color: yellow,
-      },
-      {
-        name: "custom-react-router",
-        display: "React Router v7 ↗",
-        color: cyan,
-        customCommand: "npm create react-router@latest TARGET_DIR",
-      },
-    ],
-  },
-  {
-    name: "preact",
-    display: "Preact",
-    color: magenta,
-    variants: [
-      {
-        name: "preact-ts",
-        display: "TypeScript",
-        color: blue,
-      },
-      {
-        name: "preact",
-        display: "JavaScript",
-        color: yellow,
-      },
-      {
-        name: "custom-create-preact",
-        display: "Official Preact Starter ↗",
-        color: magenta,
-        customCommand: "npm create preact@latest TARGET_DIR",
-      },
-    ],
-  },
-  {
-    name: "lit",
-    display: "Lit",
-    color: redBright,
-    variants: [
-      {
-        name: "lit-ts",
-        display: "TypeScript",
-        color: blue,
-      },
-      {
-        name: "lit",
-        display: "JavaScript",
-        color: yellow,
-      },
-    ],
-  },
-  {
-    name: "svelte",
-    display: "Svelte",
-    color: red,
-    variants: [
-      {
-        name: "svelte-ts",
-        display: "TypeScript",
-        color: blue,
-      },
-      {
-        name: "svelte",
-        display: "JavaScript",
-        color: yellow,
-      },
-      {
-        name: "custom-svelte-kit",
-        display: "SvelteKit ↗",
-        color: red,
-        customCommand: "npm exec sv create TARGET_DIR",
-      },
-    ],
-  },
-  {
-    name: "solid",
-    display: "Solid",
-    color: blue,
-    variants: [
-      {
-        name: "solid-ts",
-        display: "TypeScript",
-        color: blue,
-      },
-      {
-        name: "solid",
-        display: "JavaScript",
-        color: yellow,
-      },
-    ],
-  },
-  {
-    name: "qwik",
-    display: "Qwik",
-    color: blueBright,
-    variants: [
-      {
-        name: "qwik-ts",
-        display: "TypeScript",
-        color: blueBright,
-      },
-      {
-        name: "qwik",
-        display: "JavaScript",
-        color: yellow,
-      },
-      {
-        name: "custom-qwik-city",
-        display: "QwikCity ↗",
-        color: blueBright,
-        customCommand: "npm create qwik@latest basic TARGET_DIR",
-      },
-    ],
-  },
-  {
-    name: "angular",
-    display: "Angular",
-    color: red,
-    variants: [
-      {
-        name: "custom-angular",
-        display: "Angular ↗",
-        color: red,
-        customCommand: "npm exec @angular/cli@latest new TARGET_DIR",
-      },
-      {
-        name: "custom-analog",
-        display: "Analog ↗",
-        color: yellow,
-        customCommand: "npm create analog@latest TARGET_DIR",
-      },
-    ],
-  },
-  {
-    name: "others",
-    display: "Others",
-    color: reset,
-    variants: [
-      {
-        name: "create-vite-extra",
-        display: "Extra Vite Starters ↗",
-        color: reset,
-        customCommand: "npm create vite-extra@latest TARGET_DIR",
-      },
-      {
-        name: "create-electron-vite",
-        display: "Electron ↗",
-        color: reset,
-        customCommand: "npm create electron-vite@latest TARGET_DIR",
-      },
-    ],
-  },
-];
-
-const TEMPLATES = FRAMEWORKS.map((f) => f.variants.map((v) => v.name)).reduce(
-  (a, b) => a.concat(b),
-  [],
-);
+const TEMPLATES = SETUP_OPTIONS.reduce((a, b) => a.concat(b), []);
 
 const renameFiles: Record<string, string | undefined> = {
   _gitignore: ".gitignore",
@@ -394,7 +156,7 @@ async function init() {
       message: hasInvalidArgTemplate
         ? `"${argTemplate}" isn't a valid template. Please choose from below: `
         : "Select a framework:",
-      options: FRAMEWORKS.map((framework) => {
+      options: SETUP_OPTIONS.map((framework) => {
         const frameworkColor = framework.color;
         return {
           label: frameworkColor(framework.display || framework.name),
@@ -403,44 +165,17 @@ async function init() {
       }),
     });
     if (prompts.isCancel(framework)) return cancel();
-
-    const variant = await prompts.select({
-      message: "Select a variant:",
-      options: framework.variants.map((variant) => {
-        const variantColor = variant.color;
-        const command = variant.customCommand
-          ? getFullCustomCommand(variant.customCommand, pkgInfo).replace(
-              / TARGET_DIR$/,
-              "",
-            )
-          : undefined;
-        return {
-          label: variantColor(variant.display || variant.name),
-          value: variant.name,
-          hint: command,
-        };
-      }),
-    });
-    if (prompts.isCancel(variant)) return cancel();
-
-    template = variant;
+    console.log(framework);
+    template = framework.name;
   }
 
   const root = path.join(cwd, targetDir);
   fs.mkdirSync(root, { recursive: true });
 
-  // determine template
-  let isReactSwc = false;
-  if (template.includes("-swc")) {
-    isReactSwc = true;
-    template = template.replace("-swc", "");
-  }
-
   const pkgManager = pkgInfo ? pkgInfo.name : "npm";
 
   const { customCommand } =
-    FRAMEWORKS.flatMap((f) => f.variants).find((v) => v.name === template) ??
-    {};
+    SETUP_OPTIONS.find((v) => v.name === template) ?? {};
 
   if (customCommand) {
     const fullCustomCommand = getFullCustomCommand(customCommand, pkgInfo);
@@ -458,11 +193,7 @@ async function init() {
 
   prompts.log.step(`Scaffolding project in ${root}...`);
 
-  const templateDir = path.resolve(
-    process.cwd(),
-    "../..",
-    `template-${template}`,
-  );
+  const templateDir = path.resolve(process.cwd(), `src/templates/${template}`);
 
   const write = (file: string, content?: string) => {
     const targetPath = path.join(root, renameFiles[file] ?? file);
@@ -485,10 +216,6 @@ async function init() {
   pkg.name = packageName;
 
   write("package.json", JSON.stringify(pkg, null, 2) + "\n");
-
-  if (isReactSwc) {
-    setupReactSwc(root, template.endsWith("-ts"));
-  }
 
   let doneMessage = "";
   const cdProjectName = path.relative(cwd, root);
