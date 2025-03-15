@@ -2,18 +2,21 @@
   "name": "@babylonjsmarket/create-arcade",
   "version": "0.0.1",
   "type": "module",
+  "main": "src/index.ts",
+  "bin": {
+    "create-arcade": "index.js"
+  },
   "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "preview": "vite preview"
+    "dev": "unbuild --stub",
+    "public": "npm publish --access public",
+    "build": "unbuild",
+    "prepack": "unbuild"
   },
   "engines": {
     "node": "^18.0.0 || ^20.0.0 || >=22.0.0"
   },
   "homepage": "https://babylonjsmarket.com",
   "devDependencies": {
-    "typescript": "~5.7.2",
-    "vite": "^6.2.0",
     "@clack/prompts": "^0.10.0",
     "cross-spawn": "^7.0.6",
     "mri": "^1.2.0",

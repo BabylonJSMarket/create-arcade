@@ -2,7 +2,6 @@
 
 import fs from "node:fs";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
 import spawn from "cross-spawn";
 import mri from "mri";
 import * as prompts from "@clack/prompts";
@@ -460,7 +459,7 @@ async function init() {
   prompts.log.step(`Scaffolding project in ${root}...`);
 
   const templateDir = path.resolve(
-    fileURLToPath(import.meta.url),
+    process.cwd(),
     "../..",
     `template-${template}`,
   );
@@ -475,7 +474,7 @@ async function init() {
   };
 
   const files = fs.readdirSync(templateDir);
-  for (const file of files.filter((f) => f !== "package.json")) {
+  for (const file of files.filter((f: any) => f !== "package.json")) {
     write(file);
   }
 
