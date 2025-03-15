@@ -2,10 +2,6 @@
   "name": "babylonjs-arcade",
   "version": "0.0.1",
   "type": "module",
-  "main": "src/index.ts",
-  "bin": {
-    "arcade": "src/index.ts"
-  },
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
