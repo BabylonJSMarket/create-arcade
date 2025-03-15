@@ -8,7 +8,7 @@
   },
   "scripts": {
     "dev": "unbuild --stub",
-    "public": "npm publish --access public",
+    "publish": "npm publish --access public",
     "build": "unbuild",
     "prepack": "unbuild"
   },
