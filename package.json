@@ -4,7 +4,7 @@
   "type": "module",
   "main": "src/index.ts",
   "bin": {
-    "arcade": "dist/index.ts"
+    "create-arcade": "dist/index.ts"
   },
   "scripts": {
     "dev": "vite",
