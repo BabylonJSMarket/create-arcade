@@ -2,7 +2,7 @@
   "name": "@babylonjsmarket/create-arcade",
   "version": "0.0.1",
   "type": "module",
-  "main": "src/index.js",
+  "main": "dist/index.mjs",
   "bin": {
     "create-arcade": "dist/index.mjs"
   },
