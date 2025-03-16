@@ -1,6 +1,6 @@
 {
   "name": "@babylonjsmarket/create-arcade",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "type": "module",
   "bin": {
     "create-arcade": "index.js"
@@ -20,6 +20,9 @@
     "node": "^18.0.0 || ^20.0.0 || >=22.0.0"
   },
   "homepage": "https://babylonjsmarket.com",
+  "github": {
+    "url": "https://github.com/babylonjsmarket/create-arcade.git"
+  },
   "devDependencies": {
     "@clack/prompts": "^0.10.0",
     "cross-spawn": "^7.0.6",
