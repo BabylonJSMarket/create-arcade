@@ -195,7 +195,7 @@ async function init() {
 
   const templateDir = path.resolve(
     fileURLToPath(import.meta.url),
-    "../..",
+    "../",
     `template-${template}`,
   );
 
