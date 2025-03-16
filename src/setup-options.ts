@@ -30,12 +30,12 @@ type FrameworkVariant = {
 
 export default [
   {
-    name: "empty-3d",
-    display: "Empty 3D Scene",
+    name: "ThirdPerson",
+    display: "Third Person",
     color: yellow,
   },
   {
-    name: "fps",
+    name: "FirstPerson",
     display: "First Person",
     color: green,
   },

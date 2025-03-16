@@ -1,0 +1,54 @@
+{
+  "StartScreen": {
+    "entities": {
+      "GamesMenu": {
+        "components": {
+          "FollowCamera": {
+            "offset": 6,
+            "detachControl": true
+          },
+          "Movement": {
+            "position": [
+              -1,
+              0,
+              -1
+            ],
+            "rotation": [
+              0,
+              1,
+              0
+            ]
+          },
+          "Background": {
+            "clearColor": [
+              0.2,
+              0.2,
+              0.2
+            ]
+          },
+          "GamesMenuGUI": {
+            "options": [
+              {
+                "text": "Arcade",
+                "action": "Arcade"
+              },
+              {
+                "text": "FirstPerson",
+                "action": "FirstPerson"
+              },
+              {
+                "text": "ThirdPerson",
+                "action": "ThirdPerson"
+              }
+            ]
+          },
+          "VideoTexture": {
+            "src": "/Assets/Videos/Arcade-Infinity.mp4",
+            "loop": true,
+            "autoplay": true
+          }
+        }
+      }
+    }
+  }
+}
