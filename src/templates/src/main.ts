@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // Create the game instance and initialize the scene
   const params = new URLSearchParams(location.search);
-  const gameName = params.get("game") || "AllGames";
+  const gameName = params.get("game") || "Arcade";
   const level = params.get("scene") || params.get("level") || "0";
   const game = new Game(engine, gameName, level);
   // new EntityInspector(scene, game.world);

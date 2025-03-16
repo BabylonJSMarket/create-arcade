@@ -19,6 +19,7 @@ export const StartScreen = {
           detachControl: true,
         },
         Movement: {
+          stationary: true,
           position: [-1, 0, -1],
           rotation: [0, 1, 0],
         },

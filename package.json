@@ -23,6 +23,15 @@
   "github": {
     "url": "https://github.com/babylonjsmarket/create-arcade.git"
   },
+  "author": "Lawrence Whiteside contact@lawrencewhiteside.com",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/babylonjsmarket/create-arcade.git"
+  },
+  "bugs": {
+    "url": "https://github.com/babylonjsmarket/create-arcade/issues"
+  },
   "devDependencies": {
     "@clack/prompts": "^0.10.0",
     "cross-spawn": "^7.0.6",

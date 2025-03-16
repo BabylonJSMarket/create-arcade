@@ -7,6 +7,7 @@ import obfuscator from "rollup-plugin-obfuscator";
 // import { VitePWA } from "vite-plugin-pwa";
 
 // Export a Vite configuration
+const __dirname = process.cwd();
 export default defineConfig(({ mode }) => {
   // Common configuration for all modes
   let config = {
@@ -32,7 +33,7 @@ export default defineConfig(({ mode }) => {
         name: "custom-watch-plugin",
         configureServer(server) {
           // Watch the specific folder hierarchy
-          const watcher = chokidar.watch("data/**/**", {
+          const watcher = chokidar.watch("./data/**/**", {
             ignored: /[\/\\]\./,
             persistent: true,
           });
