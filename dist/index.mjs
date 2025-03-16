@@ -4,6 +4,7 @@ import path from 'node:path';
 import require$$0$2 from 'child_process';
 import require$$0$1 from 'path';
 import require$$0 from 'fs';
+import { fileURLToPath } from 'node:url';
 import 'node:util';
 import g, { stdin, stdout } from 'node:process';
 import f$1 from 'node:readline';
@@ -1223,7 +1224,11 @@ async function init() {
     process.exit(status ?? 0);
   }
   f.step(`Scaffolding project in ${root}...`);
-  const templateDir = path.resolve(`./src/templates/${template}`);
+  const templateDir = path.resolve(
+    fileURLToPath(import.meta.url),
+    "../..",
+    `template-${template}`
+  );
   const write = (file, content) => {
     const targetPath = path.join(root, renameFiles[file] ?? file);
     if (content) {
