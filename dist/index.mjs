@@ -1226,9 +1226,10 @@ async function init() {
   f.step(`Scaffolding project in ${root}...`);
   const templateDir = path.resolve(
     fileURLToPath(import.meta.url),
-    "../..",
-    `template-${template}`
+    "../../",
+    `src/templates/${template}`
   );
+  console.log(import.meta.url, templateDir);
   const write = (file, content) => {
     const targetPath = path.join(root, renameFiles[file] ?? file);
     if (content) {
