@@ -3,6 +3,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import spawn from "cross-spawn";
+import { fileURLToPath } from "node:url";
 import mri from "mri";
 import * as prompts from "@clack/prompts";
 import SETUP_OPTIONS from "./setup-options.ts";
@@ -192,7 +193,11 @@ async function init() {
 
   prompts.log.step(`Scaffolding project in ${root}...`);
 
-  const templateDir = path.resolve(process.cwd(), `src/templates/${template}`);
+  const templateDir = path.resolve(
+    fileURLToPath(import.meta.url),
+    "../..",
+    `template-${template}`,
+  );
 
   const write = (file: string, content?: string) => {
     const targetPath = path.join(root, renameFiles[file] ?? file);

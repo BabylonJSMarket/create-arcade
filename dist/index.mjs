@@ -1223,7 +1223,7 @@ async function init() {
     process.exit(status ?? 0);
   }
   f.step(`Scaffolding project in ${root}...`);
-  const templateDir = path.resolve(process.cwd(), `src/templates/${template}`);
+  const templateDir = path.resolve(`./src/templates/${template}`);
   const write = (file, content) => {
     const targetPath = path.join(root, renameFiles[file] ?? file);
     if (content) {
