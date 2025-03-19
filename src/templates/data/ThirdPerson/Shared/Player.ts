@@ -1,6 +1,11 @@
 // import Actions from "./Actions";
 
-export const Player = (name: string = "Player", src: string = "Barbarian") => {
+export const Player = (
+  name: string = "Player",
+  src: string = "Barbarian",
+  spawnAt = [0, 0, 0],
+  etc = {},
+) => {
   return {
     [name]: {
       components: {
@@ -8,7 +13,7 @@ export const Player = (name: string = "Player", src: string = "Barbarian") => {
           name: name,
           src: `/Assets/Meshes/${src}.glb`,
           rotation: [0, 0, 0],
-          position: [0, 0, 0],
+          position: spawnAt,
         },
         Debug: {
           bgAlpha: 1,
@@ -44,6 +49,7 @@ export const Player = (name: string = "Player", src: string = "Barbarian") => {
             Jumping: true,
           },
         },
+        ...etc,
       },
     },
   };

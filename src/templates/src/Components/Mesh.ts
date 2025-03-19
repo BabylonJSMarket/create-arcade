@@ -13,14 +13,16 @@ import { arrayToMap } from "~/lib/utils";
 
 export interface MeshComponentInput {
   src: string;
+  position: number[];
 }
 
 export class MeshComponent extends Component {
   public src: string;
   public mesh: Mesh;
+  public position: Vector3 = Vector3.Zero();
   constructor(data: MeshComponentInput) {
     super(data);
-
+    if (data.position) this.position = Vector3.FromArray(data.position);
     this.src = data.src;
   }
 }
@@ -55,13 +57,14 @@ export class MeshSystem extends System {
       });
       const mesh = task.loadedMeshes[0];
       const animations = task.loadedAnimationGroups;
-      // debugger ;
       // if (actionComponent) actionComponent.animations = arrayToMap(animations);
       meshComponent.mesh = mesh;
       meshComponent.ready = true;
       meshComponent.loading = false;
       meshComponent.mesh.name = entity.name + "_MESH";
       entity.addChild(mesh);
+      if (entity.position != meshComponent.position)
+        entity.position.copyFrom(meshComponent.position);
       entity.meshLoaded = true;
     };
     this.assetsManager.load();

@@ -3,7 +3,6 @@ import path from "path";
 import { exec } from "child_process";
 import chokidar from "chokidar";
 import glsl from "vite-plugin-glsl";
-import obfuscator from "rollup-plugin-obfuscator";
 // import { VitePWA } from "vite-plugin-pwa";
 
 // Export a Vite configuration
@@ -33,7 +32,7 @@ export default defineConfig(({ mode }) => {
         name: "custom-watch-plugin",
         configureServer(server) {
           // Watch the specific folder hierarchy
-          const watcher = chokidar.watch("./data/**/**", {
+          const watcher = chokidar.watch("data/**/*", {
             ignored: /[\/\\]\./,
             persistent: true,
           });

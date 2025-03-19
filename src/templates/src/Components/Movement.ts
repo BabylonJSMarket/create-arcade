@@ -186,8 +186,8 @@ export class MovementSystem extends System {
     // const isImobile = context?.state.isBlocking;
     // if (isImobile) return;
 
-    if (position !== entity.position && velocity.length() == 0)
-      entity.position = movementComponent.position;
+    // if (position !== entity.position && velocity.length() == 0)
+    //   entity.position = movementComponent.position;
 
     // 2. Calculate the acceleration needed to reach desired velocity
     let acceleration = desiredVelocity.scale(deltaTime);
@@ -201,7 +201,7 @@ export class MovementSystem extends System {
     movementComponent.position.addInPlace(movementComponent.velocity);
 
     // Handle gravity
-    if (movementComponent.position.y < 0) movementComponent.position.y = 0;
+    // if (movementComponent.position.y < 0) movementComponent.position.y = 0;
 
     entity.position = movementComponent.position;
     this.rotateTowards(entity, movementComponent, deltaTime);
