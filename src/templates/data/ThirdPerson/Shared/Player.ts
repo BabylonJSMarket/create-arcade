@@ -20,7 +20,6 @@ export const Player = (
           bgColor: name == "Player" ? "DarkRed" : "DarkGreen",
         },
         Movement: {
-          position: [0, 0, 0],
           walkingSpeed: 3,
           runningSpeed: 5,
           jumpingSpeed: 5,

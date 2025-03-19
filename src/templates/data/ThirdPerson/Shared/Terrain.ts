@@ -2,21 +2,19 @@ export const Terrain = {
   Terrain: {
     components: {
       Movement: {
-        position: [0, -2, 0],
         stationary: true,
       },
-      Mesh: {
-        name: "Floor",
-        src: "/Assets/Meshes/Level-1.glb",
+      Ground: {
+        width: 100,
+        height: 100,
+        groundTexture: "/Assets/Meshes/terrain.jpg",
+        textureScale: 10,
       },
       FollowCamera: {
         offset: 14,
         target: "Player",
       },
       Debug: {},
-      Background: {
-        gravity: -1,
-      },
       GameMode: {
         currentMode: "ThirdPerson",
         modes: ["TopDown", "SideScroller", "ThirdPerson"],

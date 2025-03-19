@@ -57,7 +57,10 @@ export class MeshSystem extends System {
       });
       const mesh = task.loadedMeshes[0];
       const animations = task.loadedAnimationGroups;
-      // if (actionComponent) actionComponent.animations = arrayToMap(animations);
+      animations.forEach((animation) => {
+        animation.stop();
+        if (animation.name.toUpperCase().includes("IDLE")) animation.play(true);
+      });
       meshComponent.mesh = mesh;
       meshComponent.ready = true;
       meshComponent.loading = false;

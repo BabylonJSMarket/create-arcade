@@ -1,0 +1,60 @@
+import {
+  Color3,
+  MeshBuilder,
+  StandardMaterial,
+  Texture,
+  Vector2,
+} from "@babylonjs/core";
+import { Component, Entity, World, System } from "~/lib/ECS";
+
+export interface GroundComponentInput {
+  height: number;
+  width: number;
+  groundTexture: string;
+  textureScale: number;
+}
+
+export class GroundComponent extends Component {
+  public height: number;
+  public width: number;
+  public groundTexture: string;
+  public textureScale: number = 1;
+
+  constructor(data: GroundComponentInput) {
+    super(data);
+    this.height = data.height;
+    this.width = data.width;
+    this.groundTexture = data.groundTexture;
+    this.textureScale = data.textureScale;
+  }
+}
+
+export class GroundSystem extends System {
+  constructor(world: World, componentClasses = [GroundComponent]) {
+    super(world, componentClasses);
+  }
+
+  load(entity: Entity) {
+    const groundComponent = entity.getComponent(GroundComponent);
+    groundComponent.loading = true;
+    const { height, width, groundTexture, textureScale } = groundComponent;
+    const ground = MeshBuilder.CreateGround(
+      "ground",
+      { width, height },
+      this.scene,
+    );
+    const groundMaterial = new StandardMaterial("groundMaterial", this.scene);
+    groundMaterial.diffuseTexture = new Texture(groundTexture, this.scene);
+    groundMaterial.specularColor = new Color3(0, 0, 0);
+    ground.material = groundMaterial;
+    groundMaterial.diffuseTexture.scale(textureScale);
+    groundComponent.loaded = true;
+    groundComponent.loading = false;
+    console.log("Ground component loaded");
+  }
+  processEntity(entity: Entity) {
+    const debugComponent = entity.getComponent(GroundComponent);
+    const { loading, loaded } = debugComponent;
+    if (!loaded && !loading) this.load(entity);
+  }
+}
