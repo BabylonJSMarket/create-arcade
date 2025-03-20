@@ -1,6 +1,6 @@
 {
   "name": "@babylonjsmarket/create-arcade",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "type": "module",
   "bin": {
     "create-arcade": "index.js"
@@ -19,7 +19,7 @@
   ],
   "scripts": {
     "dev": "unbuild --stub",
-    "publish": "git add .; git commit -m 'Publish'; npm publish --access public",
+    "publish": "git add .; git commit -m 'Publish';",
     "build": "unbuild",
     "prepack": "unbuild"
   },
