@@ -1238,7 +1238,7 @@ async function init() {
       copy(path.join(templateDir, file), targetPath);
     }
   };
-  const files = fs.readdirSync(templateDir);
+  const files = fs.readdirSync(templateDir, { recursive: true });
   for (const file of files.filter((f) => f !== "package.json")) {
     write(file);
   }

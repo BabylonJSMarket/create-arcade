@@ -209,7 +209,7 @@ async function init() {
     }
   };
 
-  const files = fs.readdirSync(templateDir);
+  const files = fs.readdirSync(templateDir, { recursive: true });
   for (const file of files.filter((f: any) => f !== "package.json")) {
     write(file);
   }

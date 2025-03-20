@@ -1,11 +1,11 @@
 const options = [
   {
-    label: "Play",
-    action: "0.json",
+    text: "Play",
+    action: "1",
   },
   {
-    label: "Options",
-    action: "options.json",
+    text: "Options",
+    action: "options",
   },
 ];
 
