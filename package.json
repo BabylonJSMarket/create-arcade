@@ -1,13 +1,16 @@
 {
   "name": "@babylonjsmarket/create-arcade",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "type": "module",
   "bin": {
     "create-arcade": "index.js"
   },
   "files": [
     "index.js",
-    "src/templates",
+    "src/templates/data",
+    "src/templates/src",
+    "src/templates/public",
+    "src/templates/scripts",
     "dist"
   ],
   "scripts": {
