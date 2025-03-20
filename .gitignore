@@ -9,6 +9,7 @@ lerna-debug.log*
 
 node_modules
 *.local
+templates/**/node_modules
 
 # Editor directories and files
 .vscode/*
