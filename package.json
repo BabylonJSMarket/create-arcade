@@ -1,6 +1,6 @@
 {
   "name": "@babylonjsmarket/create-arcade",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "type": "module",
   "bin": {
     "create-arcade": "index.js"
@@ -11,6 +11,10 @@
     "src/templates/src",
     "src/templates/public",
     "src/templates/scripts",
+    "index.html",
+    "package.json",
+    "vite.config.js",
+    "README.md",
     "dist"
   ],
   "scripts": {
