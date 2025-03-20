@@ -43,11 +43,12 @@ export class GroundSystem extends System {
       { width, height },
       this.scene,
     );
-    const groundMaterial = new StandardMaterial("groundMaterial", this.scene);
+    const groundMaterial = new StandardMaterial("GroundMaterial", this.scene);
     groundMaterial.diffuseTexture = new Texture(groundTexture, this.scene);
     groundMaterial.specularColor = new Color3(0, 0, 0);
+    groundMaterial.diffuseTexture.uScale = textureScale;
+    groundMaterial.diffuseTexture.vScale = textureScale;
     ground.material = groundMaterial;
-    groundMaterial.diffuseTexture.scale(textureScale);
     groundComponent.loaded = true;
     groundComponent.loading = false;
     console.log("Ground component loaded");
