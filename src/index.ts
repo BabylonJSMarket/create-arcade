@@ -46,8 +46,8 @@ Options:
   -t, --template NAME        use a specific template
 
 Available templates:
-${yellow    ('empty-3d     empty-3d'  )}
-${green     ('fps      fps' )}
+${yellow    ('ThirdPerson     ThirdPerson'  )}
+${green     ('FirstPerson      FirstPerson' )}
 ${cyan      (''    )}
 ${cyan      ('')}
 ${magenta   (''   )}

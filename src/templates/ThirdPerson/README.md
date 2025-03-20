@@ -1,6 +1,12 @@
-#README.md
+# Welcome to the Arcade
 
-package.json
-vite.config.js
-README.md
-dist
+## Getting Started
+
+### Prerequisites
+
+- Node.js (>=14.17.0)
+- npm (>=6.14.13)
+
+### Run Server
+
+kladjflksajfds fl

@@ -1,6 +1,6 @@
 {
   "name": "@babylonjsmarket/create-arcade",
-  "version": "0.0.17",
+  "version": "0.0.18",
   "type": "module",
   "bin": {
     "create-arcade": "index.js"
@@ -19,7 +19,8 @@
   ],
   "scripts": {
     "dev": "unbuild --stub",
-    "publish": "git add .; git commit -m 'Publish';",
+    "versionbump": "vite-node src/scripts/update-patch-version.ts",
+    "publish": "git add .; git commit -m 'Publish'; npm run versionbump",
     "build": "unbuild",
     "prepack": "unbuild"
   },
