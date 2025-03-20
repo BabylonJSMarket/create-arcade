@@ -1,6 +1,6 @@
 {
   "name": "@babylonjsmarket/create-arcade",
-  "version": "0.0.20",
+  "version": "0.0.21",
   "type": "module",
   "bin": {
     "create-arcade": "index.js"
