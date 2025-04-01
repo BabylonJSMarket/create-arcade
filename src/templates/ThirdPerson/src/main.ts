@@ -31,19 +31,20 @@ document.addEventListener("DOMContentLoaded", async () => {
   const gameName = params.get("game") || "Arcade";
   const level = params.get("scene") || params.get("level") || "0";
   const game = new Game(engine, gameName, level);
-  // new EntityInspector(scene, game.world);
-  //
+
   engine.enableOfflineSupport = true;
   Database.IDBStorageEnabled = true;
 
   let lastTime = performance.now();
 
   engine.runRenderLoop(() => {
+    const scene = game.world.currentScene;
+    if (!scene || !scene.isReady()) return;
+
     // Calculate deltaTime in seconds
     const now = performance.now();
     const deltaTime = (now - lastTime) / 1000.0;
     lastTime = now;
-    const scene = game.world.currentScene;
     game.world.updateSystems(deltaTime);
     if (scene.activeCamera) scene.render();
   });

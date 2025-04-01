@@ -23,11 +23,7 @@ export class World {
     this.engine = scene.getEngine();
   }
 
-  async loadSceneData(
-    sceneName: string,
-    gameName: string,
-    onSceneLoaded = null,
-  ) {
+  async loadSceneData(sceneName: string, gameName: string) {
     const scenePath = `/GameData/${gameName}/scenes/${sceneName}.json`;
 
     const response = await fetch(scenePath, {
@@ -44,7 +40,7 @@ export class World {
 
     this.currentScene.executeWhenReady(() => {
       this.currentScene.onBeforeRenderObservable.addOnce(() => {
-        this.engine.hideLoadingUI();
+        // this.engine.hideLoadingUI();
       });
     });
   }

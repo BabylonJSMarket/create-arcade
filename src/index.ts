@@ -199,7 +199,6 @@ async function init() {
     `src/templates/${template}`,
   );
 
-  console.log(import.meta.url, templateDir);
   const write = (file: string, content?: string) => {
     const targetPath = path.join(root, renameFiles[file] ?? file);
     if (content) {
