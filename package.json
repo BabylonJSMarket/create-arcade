@@ -20,7 +20,7 @@
   "scripts": {
     "dev": "unbuild --stub",
     "versionbump": "vite-node src/scripts/update-patch-version.ts",
-    "publish": "git add .; git commit -m 'Publish'; npm run versionbump",
+    "prepublish": "npm run versionbump; git add .; git commit -m 'Publish'; ",
     "build": "unbuild",
     "prepack": "unbuild"
   },
