@@ -2,9 +2,6 @@
   "entities": {
     "Terrain": {
       "components": {
-        "Movement": {
-          "stationary": true
-        },
         "Ground": {
           "width": 100,
           "height": 100,
@@ -16,6 +13,10 @@
           "target": "Player"
         },
         "Debug": {},
+        "Physics": {
+          "gravity": -9.81,
+          "restitution": 0.5
+        },
         "GameMode": {
           "currentMode": "ThirdPerson",
           "modes": [
@@ -68,8 +69,7 @@
           "jumpingSpeed": 5,
           "maxWalkSpeed": 10,
           "maxRunSpeed": 20,
-          "rotationSpeed": 100,
-          "moveWithCollisions": true
+          "rotationSpeed": 100
         },
         "PlayerInput": {
           "type": "keyboard",
@@ -127,8 +127,7 @@
           "jumpingSpeed": 5,
           "maxWalkSpeed": 10,
           "maxRunSpeed": 20,
-          "rotationSpeed": 100,
-          "moveWithCollisions": true
+          "rotationSpeed": 100
         },
         "PlayerInput": {
           "type": "keyboard",

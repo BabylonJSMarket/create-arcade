@@ -26,7 +26,6 @@ export const Player = (
           maxWalkSpeed: 10,
           maxRunSpeed: 20,
           rotationSpeed: 100,
-          moveWithCollisions: true,
         },
         PlayerInput: {
           type: "keyboard",

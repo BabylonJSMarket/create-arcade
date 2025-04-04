@@ -66,8 +66,7 @@ export class MeshSystem extends System {
       meshComponent.loading = false;
       meshComponent.mesh.name = entity.name + "_MESH";
       entity.addChild(mesh);
-      if (entity.position != meshComponent.position)
-        entity.position.copyFrom(meshComponent.position);
+      meshComponent.loaded = true;
       entity.meshLoaded = true;
     };
     this.assetsManager.load();

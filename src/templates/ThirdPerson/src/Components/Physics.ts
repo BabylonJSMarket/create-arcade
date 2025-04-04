@@ -48,7 +48,7 @@ export class PhysicsSystem extends System {
 
   protected processEntity(entity: Entity, deltaTime: number): void {
     const { loading, loaded } = entity.getComponent(PhysicsComponent);
-    const { physicsBody } = entity.getComponent(ObstacleComponent);
+    // const { physicsBody } = entity.getComponent(ObstacleComponent);
     if (!loading && !loaded) this.load(entity, deltaTime);
   }
 }

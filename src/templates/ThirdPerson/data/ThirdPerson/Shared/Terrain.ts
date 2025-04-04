@@ -1,9 +1,8 @@
+import { PhotoDome } from "@babylonjs/core";
+
 export const Terrain = {
   Terrain: {
     components: {
-      Movement: {
-        stationary: true,
-      },
       Ground: {
         width: 100,
         height: 100,
@@ -15,6 +14,10 @@ export const Terrain = {
         target: "Player",
       },
       Debug: {},
+      Physics: {
+        gravity: -9.81,
+        restitution: 0.5,
+      },
       GameMode: {
         currentMode: "ThirdPerson",
         modes: ["TopDown", "SideScroller", "ThirdPerson"],
