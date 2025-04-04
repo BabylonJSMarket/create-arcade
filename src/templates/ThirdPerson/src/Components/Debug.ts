@@ -57,6 +57,7 @@ export class DebugSystem extends System {
     const canvas = scene.getEngine().getRenderingCanvas();
     canvas.focus();
 
+    // console.log(scene.debugLayer);
     if (scene.debugLayer?.isVisible()) {
       scene.debugLayer.hide();
       // scene.setActiveCameraByName("Camera");

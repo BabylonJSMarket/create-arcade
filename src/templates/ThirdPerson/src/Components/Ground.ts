@@ -1,6 +1,8 @@
 import {
   Color3,
   MeshBuilder,
+  PhysicsAggregate,
+  PhysicsShapeType,
   StandardMaterial,
   Texture,
   Vector2,
@@ -35,14 +37,17 @@ export class GroundSystem extends System {
   }
 
   load(entity: Entity) {
+    const physicsEngine = this.scene.getPhysicsEngine();
+    if (!physicsEngine) return;
     const groundComponent = entity.getComponent(GroundComponent);
     groundComponent.loading = true;
     const { height, width, groundTexture, textureScale } = groundComponent;
     const ground = MeshBuilder.CreateGround(
-      "ground",
+      "Ground",
       { width, height },
       this.scene,
     );
+    const body = new PhysicsAggregate(ground, PhysicsShapeType.MESH);
     const groundMaterial = new StandardMaterial("GroundMaterial", this.scene);
     groundMaterial.diffuseTexture = new Texture(groundTexture, this.scene);
     groundMaterial.specularColor = new Color3(0, 0, 0);
@@ -54,8 +59,8 @@ export class GroundSystem extends System {
     console.log("Ground component loaded");
   }
   processEntity(entity: Entity) {
-    const debugComponent = entity.getComponent(GroundComponent);
-    const { loading, loaded } = debugComponent;
+    const groundComponent = entity.getComponent(GroundComponent);
+    const { loading, loaded } = groundComponent;
     if (!loaded && !loading) this.load(entity);
   }
 }

@@ -94,5 +94,6 @@ export class PlayerInputSystem extends System {
     const { x, z, y } = playerInputComponent.movementVector;
     let a = !!(x || z) ? { MOVING: true } : {};
     playerInputComponent.currentActions = a;
+    // console.log("Actions: ", a);
   }
 }

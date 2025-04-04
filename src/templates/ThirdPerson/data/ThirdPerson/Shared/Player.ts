@@ -13,13 +13,13 @@ export const Player = (
           name: name,
           src: `/Assets/Meshes/${src}.glb`,
           rotation: [0, 0, 0],
-          position: spawnAt,
         },
         Debug: {
           bgAlpha: 1,
           bgColor: name == "Player" ? "DarkRed" : "DarkGreen",
         },
         Movement: {
+          position: spawnAt,
           walkingSpeed: 3,
           runningSpeed: 5,
           jumpingSpeed: 5,

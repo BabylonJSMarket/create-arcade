@@ -2,12 +2,15 @@ import {
   HavokPlugin,
   Mesh,
   MeshBuilder,
+  PhysicsAggregate,
+  PhysicsShapeType,
   PhysicsViewer,
   Vector3,
 } from "@babylonjs/core";
 import { World, Entity, System, Component } from "~/lib/ECS";
 import HavokPhysics from "@babylonjs/havok";
 import { ObstacleComponent } from "./Obstacle";
+import { MeshComponent } from "./Mesh";
 
 interface PhysicsInputData {
   gravity: any;
@@ -32,9 +35,9 @@ export class PhysicsSystem extends System {
 
   async load(entity: Entity, deltaTime: number) {
     if (this.scene.isLoading) return;
-    this.viewer = new PhysicsViewer(this.scene);
     const physicsComponent = entity.getComponent(PhysicsComponent);
     const obstacleComponent = entity.getComponent(ObstacleComponent);
+    const meshComponent = entity.getComponent(MeshComponent);
     physicsComponent.loading = true;
     const { gravity } = physicsComponent;
     this.scene.gravity = new Vector3(0, gravity, 0);
@@ -42,6 +45,7 @@ export class PhysicsSystem extends System {
     var hk = new HavokPlugin(true, havokInstance);
     this.plugin = hk;
     this.scene.enablePhysics(this.scene.gravity, hk);
+    // new PhysicsAggregate(entity, PhysicsShapeType.BOX, { mass: 0 });
     physicsComponent.loaded = true;
     physicsComponent.loading = false;
   }

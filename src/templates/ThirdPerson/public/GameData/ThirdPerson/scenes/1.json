@@ -52,11 +52,6 @@
             0,
             0,
             0
-          ],
-          "position": [
-            0,
-            0,
-            0
           ]
         },
         "Debug": {
@@ -64,6 +59,11 @@
           "bgColor": "DarkRed"
         },
         "Movement": {
+          "position": [
+            2,
+            2,
+            0
+          ],
           "walkingSpeed": 3,
           "runningSpeed": 5,
           "jumpingSpeed": 5,
@@ -97,56 +97,6 @@
             "keys": "backward",
             "keya": "left",
             "keyd": "right"
-          }
-        }
-      }
-    },
-    "Player2": {
-      "components": {
-        "Mesh": {
-          "name": "Player2",
-          "src": "/Assets/Meshes/Rogue.glb",
-          "rotation": [
-            0,
-            0,
-            0
-          ],
-          "position": [
-            2,
-            0,
-            0
-          ]
-        },
-        "Debug": {
-          "bgAlpha": 1,
-          "bgColor": "DarkGreen"
-        },
-        "Movement": {
-          "walkingSpeed": 3,
-          "runningSpeed": 5,
-          "jumpingSpeed": 5,
-          "maxWalkSpeed": 10,
-          "maxRunSpeed": 20,
-          "rotationSpeed": 100
-        },
-        "PlayerInput": {
-          "type": "keyboard",
-          "adjustWithView": true,
-          "actionMap": {
-            "forward": "Moving_Forward",
-            "backward": "Moving_Backward",
-            "left": "Moving_Left",
-            "right": "Moving_Right",
-            "spacebar": "Jump"
-          }
-        },
-        "Animation": {
-          "startingAnimation": "Idle_A",
-          "moveAnimation": "Running_A",
-          "loopMap": {
-            "Idle": true,
-            "Running": true,
-            "Jumping": true
           }
         }
       }

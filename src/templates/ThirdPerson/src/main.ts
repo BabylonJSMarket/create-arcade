@@ -21,9 +21,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   // Ensure the DOM is fully loaded before attempting to access the canvas
   const canvas = document.getElementById("renderCanvas") as HTMLCanvasElement; // Adjust the ID as needed
   const engine = new Engine(canvas, true, {
-    deterministicLockstep: true,
-    lockstepMaxSteps: 4,
-    stencil: true,
+    // deterministicLockstep: true,
+    // lockstepMaxSteps: 4,
+    // stencil: true,
   });
 
   // Create the game instance and initialize the scene
