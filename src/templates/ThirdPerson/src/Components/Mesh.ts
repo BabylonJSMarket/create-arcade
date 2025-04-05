@@ -4,26 +4,35 @@ import {
   Material,
   Mesh,
   Vector3,
+  PhysicsAggregate,
+  PhysicsShapeMesh,
+  PhysicsShape,
+  PhysicsShapeType,
 } from "@babylonjs/core";
 import { System, World, Entity, Component } from "~/lib/ECS";
 import "@babylonjs/loaders";
-import { LightingComponent } from "./Lighting";
-// import { ActionComponent } from "./Action";
+
 import { arrayToMap } from "~/lib/utils";
 
 export interface MeshComponentInput {
   src: string;
   position: number[];
+  collider: string;
+  scale: number;
 }
 
 export class MeshComponent extends Component {
   public src: string;
   public mesh: Mesh;
+  public scale: number;
+  public collider: string;
   public position: Vector3 = Vector3.Zero();
   constructor(data: MeshComponentInput) {
     super(data);
     if (data.position) this.position = Vector3.FromArray(data.position);
     this.src = data.src;
+    this.collider = data.collider;
+    this.scale = data.scale;
   }
 }
 
@@ -43,6 +52,7 @@ export class MeshSystem extends System {
 
   loadMesh(entity: Entity) {
     const meshComponent = entity.getComponent(MeshComponent);
+    const { scale, collider } = meshComponent;
     // const actionComponent = entity.getComponent(ActionComponent);
     const meshTask = this.assetsManager.addMeshTask(
       meshComponent.src,
@@ -52,10 +62,16 @@ export class MeshSystem extends System {
     );
     meshTask.onSuccess = (task) => {
       task.loadedMeshes.forEach((m) => {
-        // m.checkCollisions = false;
-        // m.isPickable = false;
+        m.checkCollisions = false;
+        m.isPickable = false;
+        if (collider && m.name.toUpperCase().includes(collider.toUpperCase())) {
+          new PhysicsAggregate(m, PhysicsShapeType.MESH, this.scene);
+        }
       });
       const mesh = task.loadedMeshes[0];
+      if (scale) {
+        mesh.scaling = new Vector3(scale, scale, scale);
+      }
       const animations = task.loadedAnimationGroups;
       animations.forEach((animation) => {
         animation.stop();

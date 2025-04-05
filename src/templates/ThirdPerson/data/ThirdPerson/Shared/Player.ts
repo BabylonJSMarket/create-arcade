@@ -3,7 +3,7 @@
 export const Player = (
   name: string = "Player",
   src: string = "Barbarian",
-  spawnAt = [0, 2, 0],
+  spawnAt = [0, 15, 0],
   etc = {},
 ) => {
   return {

@@ -4,7 +4,7 @@ import { Terrain } from "../Shared/Terrain";
 export default {
   entities: {
     ...Terrain,
-    ...Player("Player", "Barbarian", [2, 2, 0], {
+    ...Player("Player", "Barbarian", [2, 12, 0], {
       KeyboardControl: {
         keyMap: {
           keyw: "forward",

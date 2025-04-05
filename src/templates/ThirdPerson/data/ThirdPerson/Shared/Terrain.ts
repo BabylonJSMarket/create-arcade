@@ -3,11 +3,11 @@ import { PhotoDome } from "@babylonjs/core";
 export const Terrain = {
   Terrain: {
     components: {
-      Ground: {
-        width: 100,
-        height: 100,
-        groundTexture: "/Assets/Meshes/terrain.jpg",
-        textureScale: 10,
+      Mesh: {
+        src: "/Assets/Meshes/RaceTrack.glb",
+        colliders: "Collider",
+        scale: 20,
+        position: [0, -15, 0],
       },
       FollowCamera: {
         offset: 14,
