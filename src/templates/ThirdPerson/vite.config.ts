@@ -32,7 +32,7 @@ export default defineConfig(({ mode }) => {
         name: "custom-watch-plugin",
         configureServer(server) {
           // Watch the specific folder hierarchy
-          const watcher = chokidar.watch("data/**/*", {
+          const watcher = chokidar.watch("src/templates/**/data/**/*", {
             ignored: /[\/\\]\./,
             persistent: true,
           });
@@ -48,7 +48,7 @@ export default defineConfig(({ mode }) => {
               console.log(`stdout: ${stdout}`);
               // Send reload command to the client
               server.ws.send({
-                type: "full-reload",
+                type: "hot-reload",
               });
             });
           });

@@ -1,7 +1,10 @@
 import { Component, Entity, World, System } from "~/lib/ECS";
 import {
   CharacterSupportedState,
+  MeshBuilder,
+  PhysicsAggregate,
   PhysicsCharacterController,
+  PhysicsShapeType,
 } from "@babylonjs/core";
 import { PlayerInputComponent } from "./PlayerInput";
 import {
@@ -22,6 +25,7 @@ export interface MovementInput {
   inAirSpeed: number;
   onGroundSpeed: number;
   jumpHeight: number;
+  rotationSpeed: number;
 }
 
 // MovementComponent.ts
@@ -30,8 +34,9 @@ export class MovementComponent extends Component {
   controller: PhysicsCharacterController;
   state: string = "IN_AIR";
   inAirSpeed = 80.0;
-  onGroundSpeed = 1000.0;
+  onGroundSpeed = 10000.0;
   jumpHeight = 1.5;
+  rotationSpeed = 100;
   wantJump = false;
   forwardLocalSpace = new Vector3(0, 0, 1);
   characterOrientation = Quaternion.Identity();
@@ -85,11 +90,23 @@ export class MovementSystem extends System {
     movementComponent.controller = new PhysicsCharacterController(
       entity.position,
       {
-        capsuleHeight: 0.7,
-        capsuleRadius: 0.3,
+        capsuleHeight: 3,
+        capsuleRadius: 1,
       },
       this.scene,
     );
+    // const capsule = MeshBuilder.CreateCapsule(
+    //   "CharacterDisplay",
+    //   { height: 3, radius: 1 },
+    //   this.scene,
+    // );
+    // capsule.isVisible = false;
+    // capsule.setParent(entity);
+    // const body = new PhysicsAggregate(entity, PhysicsShapeType.CAPSULE, {
+    //   mass: 100,
+    //   restitution: 0,
+    //   friction: 100,
+    // });
     movementComponent.loading = false;
     movementComponent.loaded = true;
   }
@@ -113,7 +130,7 @@ export class MovementSystem extends System {
     const movementComponent = entity.getComponent(MovementComponent);
     // const actionComponent = entity.getComponent(ActionComponent);
 
-    const { controller, characterGravity } = movementComponent;
+    const { controller, characterGravity, state } = movementComponent;
 
     const supportInfo = controller.checkSupport(deltaTime, Vector3.Down());
     const desiredLinearVelocity = this.getDesiredVelocity(
@@ -125,6 +142,8 @@ export class MovementSystem extends System {
     controller.integrate(deltaTime, supportInfo, characterGravity);
     const newPosition = controller.getPosition();
     entity.position.copyFrom(newPosition);
+    if (state == "ON_GROUND")
+      this.rotateTowards(entity, movementComponent, deltaTime);
   }
 
   getNextState = (supportInfo, movementComponent) => {
@@ -151,6 +170,39 @@ export class MovementSystem extends System {
     }
   };
 
+  rotateTowards(
+    entity: Entity,
+    movementComponent: MovementComponent,
+    deltaTime: number,
+  ) {
+    const { rotationSpeed, controller } = movementComponent;
+    const targetVector = controller.getVelocity();
+    const speed = rotationSpeed;
+    if (targetVector.length() === 0) return; // No rotation needed if no input vector
+    const targetDirection = targetVector.normalize();
+    const currentForward = entity.forward.normalize();
+    const sign = Math.sign(Vector3.Cross(currentForward, targetDirection).y);
+    let angle = Math.atan2(
+      Vector3.Cross(currentForward, targetDirection).length(),
+      Vector3.Dot(currentForward, targetDirection),
+    );
+    angle *= sign;
+    if (Math.abs(angle) > 0.001) {
+      const axis = Vector3.Up();
+      const amountToRotate = speed * deltaTime;
+      const clampedRotation =
+        Math.sign(angle) * Math.min(Math.abs(angle), amountToRotate);
+      const q = Quaternion.RotationAxis(axis, clampedRotation);
+      if (!entity.rotationQuaternion)
+        entity.rotationQuaternion = Quaternion.Identity();
+      entity.rotationQuaternion = Quaternion.Slerp(
+        entity.rotationQuaternion,
+        entity.rotationQuaternion.multiply(q),
+        (1 - deltaTime) / 5,
+      );
+    }
+  }
+
   getDesiredVelocity(
     deltaTime: number,
     supportInfo: any,
@@ -167,7 +219,7 @@ export class MovementSystem extends System {
       jumpHeight,
       wantJump,
     } = movementComponent;
-    // console.log(state);
+
     let nextState = this.getNextState(supportInfo, movementComponent);
     if (nextState != state) {
       movementComponent.state = state = nextState;
@@ -217,24 +269,23 @@ export class MovementSystem extends System {
         upWorld,
       );
       // Horizontal projection
-      {
-        outputVelocity.subtractInPlace(supportInfo.averageSurfaceVelocity);
-        let inv1k = 1e-3;
-        if (outputVelocity.dot(upWorld) > inv1k) {
-          let velLen = outputVelocity.length();
-          outputVelocity.normalizeFromLength(velLen);
 
-          // Get the desired length in the horizontal direction
-          let horizLen = velLen / supportInfo.averageSurfaceNormal.dot(upWorld);
+      outputVelocity.subtractInPlace(supportInfo.averageSurfaceVelocity);
+      let inv1k = 1e-3;
+      if (outputVelocity.dot(upWorld) > inv1k) {
+        let velLen = outputVelocity.length();
+        outputVelocity.normalizeFromLength(velLen);
 
-          // Re project the velocity onto the horizontal plane
-          let c = supportInfo.averageSurfaceNormal.cross(outputVelocity);
-          outputVelocity = c.cross(upWorld);
-          outputVelocity.scaleInPlace(horizLen);
-        }
-        outputVelocity.addInPlace(supportInfo.averageSurfaceVelocity);
-        return outputVelocity;
+        // Get the desired length in the horizontal direction
+        let horizLen = velLen / supportInfo.averageSurfaceNormal.dot(upWorld);
+
+        // Re project the velocity onto the horizontal plane
+        let c = supportInfo.averageSurfaceNormal.cross(outputVelocity);
+        outputVelocity = c.cross(upWorld);
+        outputVelocity.scaleInPlace(horizLen);
       }
+      outputVelocity.addInPlace(supportInfo.averageSurfaceVelocity);
+      return outputVelocity;
     } else if (state == "START_JUMP") {
       const vel = controller.getVelocity();
       let u = Math.sqrt(2 * characterGravity.length() * jumpHeight);
