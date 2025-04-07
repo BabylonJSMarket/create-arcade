@@ -9,6 +9,11 @@ export const Terrain = {
         scale: 20,
         position: [0, -15, 0],
       },
+      // Ground: {
+      //   height: 10,
+      //   width: 10,
+      //   // position: [0, 0, 0],
+      // },
       FollowCamera: {
         offset: 14,
         target: "Player",

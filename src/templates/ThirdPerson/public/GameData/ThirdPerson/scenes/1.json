@@ -2,12 +2,6 @@
   "entities": {
     "Terrain": {
       "components": {
-        "Ground": {
-          "width": 100,
-          "height": 100,
-          "groundTexture": "/Assets/Meshes/terrain.jpg",
-          "textureScale": 10
-        },
         "Mesh": {
           "src": "/Assets/Meshes/RaceTrack.glb",
           "colliders": "Collider",
@@ -57,7 +51,7 @@
       "components": {
         "Mesh": {
           "name": "Player",
-          "src": "/Assets/Meshes/Barbarian.glb",
+          "src": "/Assets/Meshes/Mario.glb",
           "rotation": [
             0,
             0,
@@ -71,10 +65,10 @@
         "Movement": {
           "position": [
             2,
-            12,
+            32,
             0
           ],
-          "walkingSpeed": 3,
+          "walkingSpeed": 40,
           "runningSpeed": 5,
           "jumpingSpeed": 5,
           "maxWalkSpeed": 10,

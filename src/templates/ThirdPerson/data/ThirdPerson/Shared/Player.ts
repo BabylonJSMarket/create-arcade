@@ -20,7 +20,7 @@ export const Player = (
         },
         Movement: {
           position: spawnAt,
-          walkingSpeed: 3,
+          walkingSpeed: 40,
           runningSpeed: 5,
           jumpingSpeed: 5,
           maxWalkSpeed: 10,

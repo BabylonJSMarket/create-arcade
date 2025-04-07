@@ -32,10 +32,20 @@ export default defineConfig(({ mode }) => {
         name: "custom-watch-plugin",
         configureServer(server) {
           // Watch the specific folder hierarchy
-          const watcher = chokidar.watch("src/templates/**/data/**/*", {
-            ignored: /[\/\\]\./,
-            persistent: true,
-          });
+          // const watcher = chokidar.watch(
+          //   "src/templates/ThirdPerson/data/**/*",
+          //   {
+          //     ignored: /[\/\\]\./,
+          //     persistent: true,
+          //   },
+          // );
+          const watcher = chokidar.watch(
+            "./src/templates/ThirdPerson/data/**/*",
+            {
+              atomic: true,
+              awaitWriteFinish: true,
+            },
+          );
 
           // Run the script when changes are detected
           watcher.on("change", (path) => {
@@ -48,7 +58,7 @@ export default defineConfig(({ mode }) => {
               console.log(`stdout: ${stdout}`);
               // Send reload command to the client
               server.ws.send({
-                type: "hot-reload",
+                type: "full-reload",
               });
             });
           });
