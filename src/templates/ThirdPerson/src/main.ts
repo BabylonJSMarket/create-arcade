@@ -1,18 +1,16 @@
 // File: main.ts
 import { Database, Engine, Scene } from "@babylonjs/core";
 import { World } from "./lib/ECS";
-import "@babylonjs/core/Debug/debugLayer"; // Import the debug layer
-import "@babylonjs/inspector"; // Import the inspector
 // import { EntityInspector } from "./lib/EntityInspector";
 
 export class Game {
   public world: World;
   public engine: Engine;
+  public gui: any;
 
   constructor(engine: Engine, gameName: string, level: string) {
     const scene = new Scene(engine);
     this.world = new World(scene);
-    this.world.loadSceneData(level, gameName);
     return this;
   }
 }
@@ -21,9 +19,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   // Ensure the DOM is fully loaded before attempting to access the canvas
   const canvas = document.getElementById("renderCanvas") as HTMLCanvasElement; // Adjust the ID as needed
   const engine = new Engine(canvas, true, {
-    // deterministicLockstep: true,
-    // lockstepMaxSteps: 4,
-    // stencil: true,
+    deterministicLockstep: true,
+    lockstepMaxSteps: 4,
+    stencil: true,
   });
 
   // Create the game instance and initialize the scene
@@ -32,10 +30,12 @@ document.addEventListener("DOMContentLoaded", async () => {
   const level = params.get("scene") || params.get("level") || "0";
   const game = new Game(engine, gameName, level);
 
-  engine.enableOfflineSupport = true;
-  Database.IDBStorageEnabled = true;
+  // engine.enableOfflineSupport = true;
+  // Database.IDBStorageEnabled = true;
 
   let lastTime = performance.now();
+  await game.world.loadSceneData(level, gameName);
+  await game.world.loadSystems();
 
   engine.runRenderLoop(() => {
     const scene = game.world.currentScene;

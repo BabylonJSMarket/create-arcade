@@ -30,13 +30,18 @@ type FrameworkVariant = {
 
 export default [
   {
+    name: "default",
+    display: "Basic ECS Template",
+    color: blue,
+  },
+  {
     name: "ThirdPerson",
-    display: "Third Person",
+    display: "Third Person Template",
     color: yellow,
   },
   {
     name: "FirstPerson",
-    display: "First Person",
+    display: "First Person Template",
     color: green,
   },
 ];

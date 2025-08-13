@@ -146,6 +146,13 @@ export class World {
     }
   }
 
+  async loadSystems(deltaTime?: number) {
+    const allPromises = this.sceneCode.systems.forEach((system: System) => {
+      if (system.load) return system.load();
+    });
+    return Promise.all(allPromises);
+  }
+
   updateSystems(deltaTime: number) {
     const fps = document.getElementById("fps");
     if (!this.sceneCode || !this.currentScene.isReady()) return;

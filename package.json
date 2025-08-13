@@ -1,21 +1,15 @@
 {
   "name": "@babylonjsmarket/create-arcade",
-  "version": "0.0.24",
+  "version": "1.0.1",
   "type": "module",
   "bin": {
     "create-arcade": "index.js"
   },
   "files": [
     "index.js",
-    "src/templates/**/data",
-    "src/templates/**/src",
-    "src/templates/**/public",
-    "src/templates/**/scripts",
-    "src/templates/**/index.html",
-    "src/templates/**/package.json",
-    "src/templates/**/vite.config.js",
-    "src/templates/**/README.md",
-    "dist"
+    "dist",
+    "README.md",
+    "LICENSE"
   ],
   "scripts": {
     "versionbump": "vite-node src/scripts/update-patch-version.ts",
@@ -39,11 +33,15 @@
   "bugs": {
     "url": "https://github.com/babylonjsmarket/create-arcade/issues"
   },
-  "devDependencies": {
+  "dependencies": {
     "@clack/prompts": "^0.10.0",
     "cross-spawn": "^7.0.6",
     "mri": "^1.2.0",
-    "picocolors": "^1.1.1",
-    "unbuild": "^3.5.0"
+    "picocolors": "^1.1.1"
+  },
+  "devDependencies": {
+    "unbuild": "^3.5.0",
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
   }
 }

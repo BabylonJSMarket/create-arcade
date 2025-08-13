@@ -81,7 +81,7 @@ export class DebugSystem extends System {
     }
   }
 
-  load(entity: Entity) {
+  loadEntity(entity: Entity) {
     const debugComponent = entity.getComponent(DebugComponent);
     debugComponent.loading = true;
     window.gui = window.gui || {};
