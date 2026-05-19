@@ -1,47 +1,46 @@
 {
   "name": "@babylonjsmarket/create-arcade",
-  "version": "1.0.1",
+  "version": "2.0.1",
   "type": "module",
+  "description": "Thin forwarder so `npm create @babylonjsmarket/arcade` runs the scaffolder shipped inside @babylonjsmarket/arcade.",
   "bin": {
     "create-arcade": "index.js"
   },
   "files": [
     "index.js",
-    "dist",
     "README.md",
     "LICENSE"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
-    "versionbump": "vite-node src/scripts/update-patch-version.ts",
-    "prepublish": "npm run versionbump; git add .; git commit -m 'Publish'; ",
-    "build": "unbuild",
-    "prepack": "unbuild"
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "engines": {
     "node": "^18.0.0 || ^20.0.0 || >=22.0.0"
   },
   "homepage": "https://babylonjsmarket.com",
-  "github": {
-    "url": "https://github.com/babylonjsmarket/create-arcade.git"
-  },
   "author": "Lawrence Whiteside contact@lawrencewhiteside.com",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/babylonjsmarket/create-arcade.git"
+    "url": "git+https://github.com/babylonjsmarket/create-arcade.git"
   },
   "bugs": {
     "url": "https://github.com/babylonjsmarket/create-arcade/issues"
   },
   "dependencies": {
-    "@clack/prompts": "^0.10.0",
-    "cross-spawn": "^7.0.6",
-    "mri": "^1.2.0",
-    "picocolors": "^1.1.1"
+    "@babylonjsmarket/arcade": "*",
+    "cross-spawn": "^7.0.6"
   },
   "devDependencies": {
-    "unbuild": "^3.5.0",
+    "@types/cross-spawn": "^6.0.6",
     "@types/node": "^20.0.0",
-    "typescript": "^5.0.0"
+    "execa": "^9.6.0",
+    "memfs": "^4.36.0",
+    "typescript": "^5.0.0",
+    "vitest": "^3.2.4"
   }
 }
