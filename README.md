@@ -1,6 +1,10 @@
 # @babylonjsmarket/create-arcade
 
-A CLI tool for scaffolding BabylonJS games using the Arcade ECS (Entity-Component-System) framework.
+A thin forwarder so `npm create @babylonjsmarket/arcade` keeps working — the
+scaffolder itself ships inside `@babylonjsmarket/arcade` and is invoked here as
+its `init` subcommand. It scaffolds a BabylonJS game project built on the
+`@babylonjsmarket/ecs` framework and the `@babylonjsmarket/arcade` component
+library.
 
 ## Quick Start
 
@@ -25,47 +29,54 @@ bun create @babylonjsmarket/arcade
 
 ### Interactive Mode
 
-Simply run the create command and follow the prompts:
+Run the create command and follow the prompts:
 
 ```bash
 npm create @babylonjsmarket/arcade@latest
 ```
 
-You'll be asked to:
-1. Choose a project name
-2. Select a template (Basic, Third Person, or First Person)
-3. Confirm package name
+You'll be asked for:
+1. A project name.
+2. A package name (only when the project name isn't a valid package name).
+
+There is **no template selection** — every scaffold produces the same default
+project (see below).
 
 ### Command Line Options
 
 ```bash
-# Create with a specific template
-npm create @babylonjsmarket/arcade@latest my-game --template ThirdPerson
+# Create in a named directory
+npm create @babylonjsmarket/arcade@latest my-game
 
-# Create in current directory
+# Create in the current directory
 npm create @babylonjsmarket/arcade@latest .
 
-# Overwrite existing directory
+# Overwrite an existing directory
 npm create @babylonjsmarket/arcade@latest my-game --overwrite
 ```
 
-## Available Templates
+## One Default Scaffold
 
-### Basic ECS Template
-A minimal setup with the ECS framework, perfect for starting from scratch.
+Every project starts as a data-driven **multigame arcade**: a carpeted room with
+a row of cabinets that you grow into a full arcade. Scenes are TypeScript
+modules that declare entities and their components *by name*; arcade
+lazy-imports each named component the first time it appears. Each cabinet can
+point a player at another scene registered in `src/scenes/index.ts`.
 
-### Third Person Template
-Pre-configured for third-person games with:
-- Player entity with movement controls
-- Camera follow system
-- Basic environment setup
+You don't pick a template up front. You start from this one project and pull in
+the code you actually need.
 
-### First Person Template  
-Pre-configured for first-person games with:
-- FPS camera controller
-- Movement system with WASD controls
-- Collision detection setup
-- Basic level geometry
+## Adding Components
+
+Two sources, both landing as editable source under `src/components/<Name>/` and
+wired into `src/registry.ts` so your copy overrides the package's built-in one:
+
+- **Bundled arcade library** — `arcade eject <Name>` copies components (and
+  their dependencies) into your project, shadcn-style. `arcade eject --all`
+  takes the whole library; `--dry-run` previews.
+- **BabylonJS Market** — download additional components (free or paid) from
+  [babylonjsmarket.com](https://babylonjsmarket.com) and drop them in the same
+  way.
 
 ## Project Structure
 
@@ -74,50 +85,46 @@ After scaffolding, your project will have:
 ```
 my-game/
 ├── src/
-│   ├── main.ts           # Entry point
-│   ├── components/       # ECS Components
-│   ├── systems/          # ECS Systems
-│   └── entities/         # Game entities
-├── public/               # Static assets
-├── index.html            # HTML entry
-├── package.json          # Dependencies
-├── tsconfig.json         # TypeScript config
-├── vite.config.js        # Vite config
-└── README.md             # Project docs
+│   ├── main.ts                 # Boot: BabylonAdapter → ArcadeGame → loadScene → start
+│   ├── registry.ts             # Resolvers for HUD panels and custom components
+│   └── scenes/
+│       ├── index.ts            # The scene map (the multigame seam)
+│       └── arcade-room.ts      # The starter room, as data
+├── index.html
+├── package.json
+├── tsconfig.json
+├── vite.config.js
+├── eslint.config.js
+└── README.md
 ```
 
 ## What's Included
 
 Every project comes with:
-- **@babylonjsmarket/arcade** - The ECS framework
-- **BabylonJS** - 3D engine and dependencies
-- **TypeScript** - Type-safe development
-- **Vite** - Fast build tool and dev server
-- Pre-configured development environment
+- **@babylonjsmarket/ecs** — the ECS framework
+- **@babylonjsmarket/arcade** — the free component library + CLI
+- **BabylonJS** — 3D engine, loaders, and Havok physics
+- **TypeScript** — type-safe development
+- **Vite** — fast dev server and build
+- **ESLint** — `@babylonjsmarket/eslint-plugin` framework rules
 
 ## Development
-
-After creating your project:
 
 ```bash
 cd my-game
 npm install
-npm run dev
+npm run dev      # http://localhost:3000
 ```
-
-Your game will be available at `http://localhost:3000`
 
 ## Building for Production
 
 ```bash
-npm run build
+npm run build    # outputs to dist/
 ```
-
-The built files will be in the `dist/` directory.
 
 ## Learn More
 
-- [Arcade ECS Documentation](https://github.com/babylonjsmarket/arcade)
+- [BabylonJS Market](https://babylonjsmarket.com)
 - [BabylonJS Documentation](https://doc.babylonjs.com/)
 - [Entity-Component-System Pattern](https://en.wikipedia.org/wiki/Entity_component_system)
 

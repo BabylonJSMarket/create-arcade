@@ -1,0 +1,44 @@
+{
+  "hero": {
+    "title": "create-arcade",
+    "imagePrompt": "Arcade cabinet materializing from terminal command line, pink neon glow with game controller icons and ECS component blocks floating around it, retro gaming aesthetic meets modern development tools, dark background with code snippets and project scaffolding visualization"
+  },
+  "features": [
+    {
+      "title": "Instant Project Scaffold",
+      "description": "Generate a complete BabylonJS game project in seconds. One command, no template menu — folder structure, configuration files, and a runnable starter scene ready for development.",
+      "imagePrompt": "Terminal showing project creation with folder tree appearing, files being generated with checkmarks, and 'Project ready!' success message",
+      "color": "pink"
+    },
+    {
+      "title": "Arcade ECS Framework",
+      "description": "Built on the @babylonjsmarket/ecs architecture. The Entity-Component-System pattern provides clean separation of data and logic for scalable game development.",
+      "imagePrompt": "Diagram showing ECS architecture with Entity boxes containing Component data flowing into System processors, all connected by arrows",
+      "color": "cyan"
+    },
+    {
+      "title": "One Default Scaffold",
+      "description": "No template to choose up front. Every project starts as a data-driven multigame arcade — a carpeted room with a row of cabinets — that you grow into a full arcade by authoring scenes as plain data.",
+      "imagePrompt": "Isometric view of a neon arcade room with a row of game cabinets, scene data and entity component blocks floating above each cabinet, dark background with pink and cyan glow",
+      "color": "purple"
+    },
+    {
+      "title": "Download Components, Free or Paid",
+      "description": "Pull in the code you actually need instead of committing to a fixed template. 'arcade eject' copies the bundled component library into your project, and the BabylonJS Market offers more components — free or paid — that drop in the same way.",
+      "imagePrompt": "Marketplace grid of game component cards with free and price tags, one card flying into a code editor and becoming editable source files, pink and orange glow on dark background",
+      "color": "orange"
+    },
+    {
+      "title": "TypeScript Ready",
+      "description": "Full TypeScript support with strict type checking and IntelliSense. Catch errors at compile time and enjoy superior code completion in your editor.",
+      "imagePrompt": "TypeScript logo with code editor autocomplete dropdown showing component properties and method signatures with type info",
+      "color": "cyan"
+    },
+    {
+      "title": "Vite Dev Server",
+      "description": "Lightning-fast development with Vite's hot module replacement. See changes instantly without losing game state. Production builds are optimized and tree-shaken.",
+      "imagePrompt": "Vite logo with lightning bolt, showing browser refresh cycle in milliseconds and hot reload indicator glowing green",
+      "color": "green"
+    }
+  ]
+}

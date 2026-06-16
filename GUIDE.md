@@ -1,6 +1,13 @@
 # create-arcade User Guide
 
-A CLI tool for scaffolding BabylonJS games using the Arcade ECS (Entity-Component-System) framework. Similar to `create-react-app` but for 3D game development.
+A CLI tool for scaffolding a BabylonJS game project built on the
+`@babylonjsmarket/ecs` framework and the `@babylonjsmarket/arcade` component
+library. Similar to `create-react-app`, but for 3D game development.
+
+There is **no template menu**. Every scaffold produces the same starting point —
+a data-driven **multigame arcade**. You grow it by authoring scenes and by
+pulling ready-made components into your project (see
+[Adding components](#adding-components-the-download-flow)).
 
 ## Installation
 
@@ -8,18 +15,6 @@ No installation required. Run directly with your package manager:
 
 ```bash
 npm create @babylonjsmarket/arcade@latest
-```
-
-Or install globally:
-
-```bash
-npm install -g @babylonjsmarket/create-arcade
-```
-
-Verify installation:
-
-```bash
-create-arcade --help
 ```
 
 ## Quick Start
@@ -38,13 +33,13 @@ npm install
 npm run dev
 ```
 
-Your game opens at `http://localhost:3000`
+Your game opens at `http://localhost:3000`.
 
 ---
 
 ## Interactive Mode
 
-Run without arguments for guided setup:
+Run without a directory argument for guided setup:
 
 ```bash
 npm create @babylonjsmarket/arcade@latest
@@ -52,23 +47,20 @@ npm create @babylonjsmarket/arcade@latest
 
 You'll be prompted for:
 
-1. **Project name** - Directory name for your project
-2. **Template** - Choose from available game templates
-3. **Package name** - npm package name (auto-generated)
+1. **Project name** — directory name for your project.
+2. **Package name** — npm package name (only asked when the project name isn't a
+   valid package name; otherwise auto-derived).
 
-Example session:
+That's the whole prompt flow — there is no framework/template question. Example
+session:
 
 ```
 ◇  Project name:
 │  my-awesome-game
 
-◇  Select a framework:
-│  ○ Empty 3D Scene
-│  ● Third Person Template
-│  ○ First Person Template
-│  ○ Full Arcade Game (from my-arcade)
-
 ◆  Scaffolding project in /path/to/my-awesome-game...
+
+Added .claude/skills/babylonjsmarket (Claude Code skill)
 
 Done. Now run:
 
@@ -85,12 +77,6 @@ Done. Now run:
 
 ```bash
 npm create @babylonjsmarket/arcade@latest my-game
-```
-
-### Specify Template
-
-```bash
-npm create @babylonjsmarket/arcade@latest my-game --template ThirdPerson
 ```
 
 ### Create in Current Directory
@@ -114,81 +100,31 @@ npm create @babylonjsmarket/arcade@latest --help
 Output:
 
 ```
-Usage: create-arcade [OPTION]... [DIRECTORY]
+Usage: arcade init [OPTION]... [DIRECTORY]
+   or: npm create @babylonjsmarket/arcade [DIRECTORY]
 
-Create a new BabylonJS Arcade project in JavaScript or TypeScript.
+Create a new multigame BabylonJS arcade powered by @babylonjsmarket/ecs and
+@babylonjsmarket/arcade.
 
 With no arguments, start the CLI in interactive mode.
 
 Options:
-  -t, --template NAME        use a specific template
-
-Available templates:
-  ThirdPerson     ThirdPerson
-  FirstPerson     FirstPerson
+  -h, --help                 print this help message
+      --overwrite            replace any existing files in the target directory
 ```
 
 ---
 
-## Available Templates
+## The Default Scaffold
 
-### Empty 3D Scene (`empty-3d`)
+Every project starts as a **multigame arcade**: a carpeted room with a row of
+cabinets that you grow into a full arcade. Scenes are TypeScript modules that
+declare entities and their components *by name* (pure data); arcade lazy-imports
+each named component the first time it appears. Each cabinet can point a player
+at another scene (a subdirectory game) registered in `src/scenes/index.ts`.
 
-Minimal BabylonJS setup without ECS.
-
-```bash
-npm create @babylonjsmarket/arcade@latest my-game --template empty-3d
-```
-
-Includes:
-- Basic scene with camera and light
-- Ground plane and sample box
-- No ECS framework (raw BabylonJS)
-
-### Third Person Template (`ThirdPerson`)
-
-Pre-configured for third-person games.
-
-```bash
-npm create @babylonjsmarket/arcade@latest my-game --template ThirdPerson
-```
-
-Includes:
-- `PlayerComponent` - Speed and rotation settings
-- `CameraFollowComponent` - Follow target with distance/height
-- `PlayerMovementSystem` - WASD movement
-- `CameraFollowSystem` - Smooth camera tracking
-- Sample environment with ground
-
-### First Person Template (`FirstPerson`)
-
-Pre-configured for FPS-style games.
-
-```bash
-npm create @babylonjsmarket/arcade@latest my-game --template FirstPerson
-```
-
-Includes:
-- `FPSControllerComponent` - Move speed, look speed, jump
-- `WeaponComponent` - Damage and fire rate
-- `FPSMovementSystem` - WASD + mouse look
-- Collision detection enabled
-- Sample level with walls
-- Pointer lock for mouse capture
-
-### Full Arcade (`full-arcade`)
-
-Complete arcade game from the my-arcade template.
-
-```bash
-npm create @babylonjsmarket/arcade@latest my-game --template full-arcade
-```
-
-Includes:
-- Full my-arcade source code
-- Selectable game data folders
-- Scripts and build configuration
-- Requires `npm link @babylonjsmarket/arcade`
+The starter room streams its carpet textures and cabinet model from the public
+BabylonJS Games asset host, so a fresh scaffold runs with **no local assets**.
 
 ---
 
@@ -199,97 +135,89 @@ After scaffolding, your project contains:
 ```
 my-game/
 ├── src/
-│   ├── main.ts                 # Game entry point
-│   └── lib/ECS/
-│       ├── Component.ts        # Base component class
-│       ├── Entity.ts           # Entity (extends Mesh)
-│       ├── System.ts           # Base system class
-│       ├── World.ts            # ECS world container
-│       └── index.ts            # Exports
-├── public/                     # Static assets (images, models)
+│   ├── main.ts                 # Boot: BabylonAdapter → ArcadeGame → loadScene → start
+│   ├── registry.ts             # Resolvers for HUD panels and any custom components
+│   └── scenes/
+│       ├── index.ts            # The scene map: every scene the arcade can load
+│       └── arcade-room.ts      # The starter room — entities + components, as data
 ├── index.html                  # HTML entry point
 ├── package.json                # Dependencies and scripts
 ├── tsconfig.json               # TypeScript configuration
 ├── vite.config.js              # Vite dev server config
+├── eslint.config.js            # Flat ESLint config (@babylonjsmarket/eslint-plugin)
+├── .claude/skills/babylonjsmarket/   # Claude Code skill (auto-discovered)
 ├── .gitignore
 └── README.md
 ```
 
+`.claude/skills/babylonjsmarket/` is dropped in automatically so Claude Code
+discovers the framework skill in your project with no plugin install.
+
 ---
 
-## ECS Framework
+## How It Works
 
-### Component
+`src/main.ts` boots the renderer through the `BabylonAdapter`, mounts the viz
+panels (press `` ` `` for the Entities panel, `F4` for the EventBus debugger),
+then calls `game.loadScene(...)` with the default scene — that's it.
 
-Data container attached to entities:
+Everything else — meshes, lights, cameras, gameplay logic — is declared in the
+scene modules as entities plus named components. The arcade package's default
+registry maps every named component to its module; bundlers tree-shake any
+component a scene doesn't use.
 
-```typescript
-import { Component } from "./lib/ECS/index.js";
+> For the component / system / world / scene-JSON API itself, see the
+> **bjs-ecs** and **bjs-arcade** guides — those are the source of truth for the
+> framework surface.
 
-export class HealthComponent extends Component {
-  health: number = 100;
-  maxHealth: number = 100;
-}
+---
+
+## Filling the Arcade
+
+Each cabinet is meant to launch its own game. To add one:
+
+1. Author a scene under `src/scenes/<my-game>.ts` (copy `arcade-room.ts`).
+2. Import it in `src/scenes/index.ts` and add it under a new key.
+3. Switch to it at runtime — `game.loadScene(SCENES['<my-game>'])` — e.g. when
+   the player activates the matching cabinet.
+
+To add a **custom** component, drop a file under `src/components/MyThing.ts`
+exporting `MyThingComponent` (and optionally `MyThingSystem`), then add
+`MyThing: () => import('./components/MyThing')` to the resolver map in
+`src/registry.ts`.
+
+---
+
+## Adding Components (the download flow)
+
+You don't pick a template up front — you **pull in code on demand**. There are
+two sources, and both land the same way: real source files in
+`src/components/<Name>/` that you own and can edit, wired into `src/registry.ts`
+so your local copy overrides the package's built-in one.
+
+### 1. The bundled arcade library — `arcade eject`
+
+`@babylonjsmarket/arcade` ships a free component library (bullets, enemies,
+spawners, cameras, pinball pieces, money fields, …). `arcade eject` copies any
+of them — plus their dependencies — into your project, shadcn-style:
+
+```bash
+arcade eject                 # eject every component this project already uses
+arcade eject Bullet Enemy    # eject specific components (+ their deps)
+arcade eject --all --dry-run # preview a full eject, write nothing
 ```
 
-### Entity
+### 2. The BabylonJS Market — download more components
 
-Game object that holds components:
+The marketplace at [babylonjsmarket.com](https://babylonjsmarket.com) carries
+additional components beyond the bundled set. Some are **free**, some are
+**paid**; once a component is in your account you download it and drop it into
+`src/components/<Name>/` exactly like an ejected one, then register it in
+`src/registry.ts`.
 
-```typescript
-const player = world.createEntity("Player");
-player.addComponent(new HealthComponent());
-player.addComponent(new PlayerComponent());
-
-// Get component
-const health = player.getComponent(HealthComponent);
-health.health -= 10;
-
-// Check for component
-if (player.hasComponent(WeaponComponent)) {
-  // ...
-}
-```
-
-### System
-
-Logic that processes entities with specific components:
-
-```typescript
-import { System, Entity, World } from "./lib/ECS/index.js";
-
-export class HealthSystem extends System {
-  constructor(world: World) {
-    super(world, [HealthComponent]);
-  }
-
-  loadEntity(entity: Entity): void {
-    console.log("Entity loaded:", entity.name);
-  }
-
-  processEntity(entity: Entity, deltaTime: number): void {
-    const health = entity.getComponent(HealthComponent);
-    if (health.health <= 0) {
-      // Handle death
-    }
-  }
-}
-```
-
-### World
-
-Container for entities and scene:
-
-```typescript
-const world = new World(scene);
-
-// Create entities
-const player = world.createEntity("Player");
-const enemy = world.createEntity("Enemy");
-
-// Query entities by components
-const healthyEntities = world.entitiesWith([HealthComponent]);
-```
+Either way, there's one default project and you grow it by downloading the
+pieces you actually need — instead of committing to a fixed template at creation
+time.
 
 ---
 
@@ -298,23 +226,25 @@ const healthyEntities = world.entitiesWith([HealthComponent]);
 ### Start Dev Server
 
 ```bash
-npm run dev
+npm run dev      # http://localhost:3000 with hot reload
 ```
-
-Opens at `http://localhost:3000` with hot reload.
 
 ### Build for Production
 
 ```bash
-npm run build
+npm run build    # outputs to dist/
 ```
-
-Outputs to `dist/` directory.
 
 ### Preview Production Build
 
 ```bash
 npm run preview
+```
+
+### Lint
+
+```bash
+npm run lint     # eslint src, enforcing the @babylonjsmarket framework rules
 ```
 
 ---
@@ -359,78 +289,20 @@ bun run dev
 
 ---
 
-## Examples
-
-### Create a Third Person Platformer
-
-```bash
-# Create project
-npm create @babylonjsmarket/arcade@latest platformer --template ThirdPerson
-cd platformer
-npm install
-
-# Start developing
-npm run dev
-```
-
-Then modify `src/main.ts` to add:
-- Platform meshes
-- Jump mechanics in PlayerMovementSystem
-- Collectibles with new components
-
-### Create an FPS Game
-
-```bash
-npm create @babylonjsmarket/arcade@latest my-fps --template FirstPerson
-cd my-fps
-npm install
-npm run dev
-```
-
-Then extend with:
-- Shooting mechanics in WeaponSystem
-- Enemy AI components
-- Health pickups
-
-### Non-Interactive CI/CD
-
-```bash
-# Create without prompts
-npm create @babylonjsmarket/arcade@latest game \
-  --template ThirdPerson \
-  --overwrite
-
-cd game
-npm install
-npm run build
-```
-
----
-
 ## Troubleshooting
 
 ### "Directory is not empty"
 
 Choose one of:
-- **Cancel** - Stop and manually clear directory
-- **Remove existing files** - Clear and continue
-- **Ignore files** - Merge with existing
+- **Cancel operation** — stop and clear the directory yourself.
+- **Remove existing files and continue** — clear and scaffold.
+- **Ignore files and continue** — merge with the existing files.
 
-Or use `--overwrite` flag:
+Or skip the prompt with `--overwrite`:
 
 ```bash
 npm create @babylonjsmarket/arcade@latest my-game --overwrite
 ```
-
-### Invalid Template Name
-
-If template doesn't exist:
-
-```
-"invalid-template" isn't a valid template. Please choose from below:
-```
-
-Use one of: `empty-3d`, `ThirdPerson`, `FirstPerson`, `full-arcade`
 
 ### Port 3000 in Use
 
@@ -444,21 +316,8 @@ export default defineConfig({
 });
 ```
 
-### TypeScript Errors
+### `arcade eject` can't find components
 
-Ensure you have TypeScript 5.x:
-
-```bash
-npm install typescript@latest --save-dev
-```
-
----
-
-## Screenshots
-
-| Image | Description |
-|-------|-------------|
-| `template-selector.png` | Interactive CLI template selection |
-| `third-person-demo.png` | Third Person template running |
-| `first-person-demo.png` | First Person template with FPS controls |
-| `project-structure.png` | Generated project in VS Code |
+Run it inside a project that has `@babylonjsmarket/arcade` installed (the
+package ships the component source it copies from). If it can't auto-detect what
+your project uses, name the components explicitly or pass `--all`.
