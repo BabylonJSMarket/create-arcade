@@ -321,3 +321,19 @@ export default defineConfig({
 Run it inside a project that has `@babylonjsmarket/arcade` installed (the
 package ships the component source it copies from). If it can't auto-detect what
 your project uses, name the components explicitly or pass `--all`.
+
+---
+
+## Screenshots
+
+![Interactive CLI: project name prompt](/images/tools/create-arcade/interactive-prompt.png)
+
+
+![The default scaffold running — the arcade room](/images/tools/create-arcade/arcade-room.png)
+
+
+![arcade eject copying components into src/components/](/images/tools/create-arcade/eject.png)
+
+
+![Generated project in VS Code](/images/tools/create-arcade/project-structure.png)
+
