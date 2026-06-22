@@ -1,6 +1,6 @@
 {
   "name": "@babylonjsmarket/create-arcade",
-  "version": "2.2.1",
+  "version": "2.2.2",
   "type": "module",
   "description": "Thin forwarder so `npm create @babylonjsmarket/arcade` runs the scaffolder shipped inside @babylonjsmarket/arcade.",
   "bin": {
