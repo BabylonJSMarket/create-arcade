@@ -167,8 +167,8 @@ registry maps every named component to its module; bundlers tree-shake any
 component a scene doesn't use.
 
 > For the component / system / world / scene-JSON API itself, see the
-> **bjs-ecs** and **bjs-arcade** guides — those are the source of truth for the
-> framework surface.
+> **[ECS Framework](/tools/bjs-ecs)** and **[Arcade Foundations](/tools/bjs-arcade)**
+> guides — those are the source of truth for the framework surface.
 
 ---
 
@@ -197,7 +197,7 @@ so your local copy overrides the package's built-in one.
 
 ### 1. The bundled arcade library — `arcade eject`
 
-`@babylonjsmarket/arcade` ships a free component library (bullets, enemies,
+[`@babylonjsmarket/arcade`](/tools/bjs-arcade) ships a free component library (bullets, enemies,
 spawners, cameras, pinball pieces, money fields, …). `arcade eject` copies any
 of them — plus their dependencies — into your project, shadcn-style:
 
@@ -322,3 +322,10 @@ Run it inside a project that has `@babylonjsmarket/arcade` installed (the
 package ships the component source it copies from). If it can't auto-detect what
 your project uses, name the components explicitly or pass `--all`.
 
+---
+
+## Where to Go Next
+
+- **[ECS Framework](/tools/bjs-ecs)** (`@babylonjsmarket/ecs`) — the runtime under everything this scaffold generates: entities, components, systems, the World, the EventBus.
+- **[Arcade Foundations](/tools/bjs-arcade)** (`@babylonjsmarket/arcade`) — the component library `arcade eject` copies from, plus the lazy JSON scene loader.
+- **[CLI](/tools/bjs-cli)** (`bjs`) — download marketplace components and assets straight into the project you just scaffolded.
