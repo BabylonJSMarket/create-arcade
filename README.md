@@ -59,24 +59,27 @@ npm create @babylonjsmarket/arcade@latest my-game --overwrite
 
 Every project starts as a data-driven **multigame arcade**: a carpeted room with
 a row of cabinets that you grow into a full arcade. Scenes are TypeScript
-modules that declare entities and their components *by name*; arcade
-lazy-imports each named component the first time it appears. Each cabinet can
+modules that declare entities and their components *by name*; each name is a
+folder in `src/components/`, loaded the first time a scene uses it. Each cabinet can
 point a player at another scene registered in `src/scenes/index.ts`.
 
 You don't pick a template up front. You start from this one project and pull in
 the code you actually need.
 
-## Adding Components
+## Components
 
-Two sources, both landing as editable source under `src/components/<Name>/` and
-wired into `src/registry.ts` so your copy overrides the package's built-in one:
+Every component is editable source under `src/components/<Name>/`, and
+`src/registry.ts` picks each folder up by name.
 
-- **Bundled arcade library** — `arcade eject <Name>` copies components (and
-  their dependencies) into your project, shadcn-style. `arcade eject --all`
-  takes the whole library; `--dry-run` previews.
-- **BabylonJS Market** — download additional components (free or paid) from
-  [babylonjsmarket.com](https://babylonjsmarket.com) and drop them in the same
-  way.
+- **The core set** — meshes, lights, cameras, input, physics, scoring and the
+  rest the starter scenes use. It is free and is **downloaded when the project
+  is created** (no login). If that download fails, or you passed `--no-core`,
+  run `npx arcade core` in the project after `npm install`. Re-running it only
+  fills in missing files. Offline, `--core-from <CodeLibrary dir>` copies the
+  set from a local library checkout.
+- **BabylonJS Market** — download more components (free or paid) from
+  [babylonjsmarket.com](https://babylonjsmarket.com) with `bjs download <Name>`.
+  They land in the same folder.
 
 ## Project Structure
 
@@ -86,7 +89,8 @@ After scaffolding, your project will have:
 my-game/
 ├── src/
 │   ├── main.ts                 # Boot: BabylonAdapter → ArcadeGame → loadScene → start
-│   ├── registry.ts             # Resolvers for HUD panels and custom components
+│   ├── components/             # The core set, plus anything you download or write
+│   ├── registry.ts             # Registers every folder in components/ by name
 │   └── scenes/
 │       ├── index.ts            # The scene map (the multigame seam)
 │       └── arcade-room.ts      # The starter room, as data

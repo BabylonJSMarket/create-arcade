@@ -35,11 +35,11 @@ the code you need afterward.
 
 | Source | How |
 |--------|-----|
-| Bundled arcade library | `arcade eject <Name>` — copy components (and deps) into `src/components/`, shadcn-style |
-| BabylonJS Market | Download more components (free or paid) from babylonjsmarket.com and drop them in the same way |
+| The core set (free) | Downloaded into `src/components/` when the project is created, no login; `npx arcade core` re-fetches missing files |
+| BabylonJS Market | `bjs download <Name>` — more components, free or paid |
 
-Both land as editable source in `src/components/<Name>/`, wired into
-`src/registry.ts` so your copy overrides the package's built-in one.
+Both land as editable source in `src/components/<Name>/`; `src/registry.ts`
+registers every folder there by name.
 
 ## Package Manager Support
 
