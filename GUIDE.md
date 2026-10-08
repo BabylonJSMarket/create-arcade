@@ -111,7 +111,21 @@ With no arguments, start the CLI in interactive mode.
 Options:
   -h, --help                 print this help message
       --overwrite            replace any existing files in the target directory
+      --no-core              don't download the core components into
+                             src/components (fetch them later with
+                             npx arcade core)
+      --core-from <dir>      copy the core components from a local library
+                             checkout (a CodeLibrary folder) instead of
+                             downloading them
+
+Also:
+  arcade core [DIRECTORY]    download the core components into an existing
+                             project's src/components (fills in missing files,
+                             never overwrites). Same --core-from option.
 ```
+
+(Abridged: `--help` also lists `--kind`, `--renderer`, `--demo` and
+`--new-project`.)
 
 ---
 
@@ -119,8 +133,8 @@ Options:
 
 Every project starts as a **multigame arcade**: a carpeted room with a row of
 cabinets that you grow into a full arcade. Scenes are TypeScript modules that
-declare entities and their components *by name* (pure data); arcade lazy-imports
-each named component the first time it appears. Each cabinet can point a player
+declare entities and their components *by name* (pure data); each name is a
+folder in `src/components/`, loaded the first time a scene uses it. Each cabinet can point a player
 at another scene (a subdirectory game) registered in `src/scenes/index.ts`.
 
 The starter room streams its carpet textures and cabinet model from the public
@@ -136,7 +150,8 @@ After scaffolding, your project contains:
 my-game/
 ├── src/
 │   ├── main.ts                 # Boot: BabylonAdapter → ArcadeGame → loadScene → start
-│   ├── registry.ts             # Resolvers for HUD panels and any custom components
+│   ├── components/             # The core set, plus anything you download or write
+│   ├── registry.ts             # Registers every folder in components/ by name
 │   └── scenes/
 │       ├── index.ts            # The scene map: every scene the arcade can load
 │       └── arcade-room.ts      # The starter room — entities + components, as data
@@ -162,9 +177,11 @@ panels (press `` ` `` for the Entities panel, `F4` for the EventBus debugger),
 then calls `game.loadScene(...)` with the default scene — that's it.
 
 Everything else — meshes, lights, cameras, gameplay logic — is declared in the
-scene modules as entities plus named components. The arcade package's default
-registry maps every named component to its module; bundlers tree-shake any
-component a scene doesn't use.
+scene modules as entities plus named components. Each of those components is a
+folder in `src/components/` that `src/registry.ts` maps by name; bundlers
+tree-shake any component a scene doesn't use. A component that needs engine
+code the adapter lacks keeps it in `adapter/register.ts`, and `main.ts` globs
+and registers those before the scene loads.
 
 > For the component / system / world / scene-JSON API itself, see the
 > **[ECS Framework](/tools/bjs-ecs)** and **[Arcade Foundations](/tools/bjs-arcade)**
@@ -181,39 +198,45 @@ Each cabinet is meant to launch its own game. To add one:
 3. Switch to it at runtime — `game.loadScene(SCENES['<my-game>'])` — e.g. when
    the player activates the matching cabinet.
 
-To add a **custom** component, drop a file under `src/components/MyThing.ts`
-exporting `MyThingComponent` (and optionally `MyThingSystem`), then add
-`MyThing: () => import('./components/MyThing')` to the resolver map in
-`src/registry.ts`.
+To add a **custom** component, make a folder `src/components/MyThing/` with a
+`MyThing.ts` exporting `MyThingComponent` (and optionally `MyThingSystem`).
+`src/registry.ts` picks the folder up by name.
 
 ---
 
 ## Adding Components (the download flow)
 
-You don't pick a template up front — you **pull in code on demand**. There are
-two sources, and both land the same way: real source files in
-`src/components/<Name>/` that you own and can edit, wired into `src/registry.ts`
-so your local copy overrides the package's built-in one.
+You don't pick a template up front — you **pull in code on demand**. Every
+component lands the same way: real source files in `src/components/<Name>/`
+that you own and can edit, picked up by `src/registry.ts` by name.
 
-### 1. The bundled arcade library — `arcade eject`
+### 1. The core set — downloaded at create time
 
-[`@babylonjsmarket/arcade`](/tools/bjs-arcade) ships a free component library (bullets, enemies,
-spawners, cameras, pinball pieces, money fields, …). `arcade eject` copies any
-of them — plus their dependencies — into your project, shadcn-style:
+The 35 core components (MeshPrimitive, Mesh, the lights and cameras, Physics,
+Health, Score, Shadow, Skybox, Pool, Sound, …) are free. The scaffolder
+downloads them into `src/components/` when it creates the project, with no
+login. If that download failed, or you passed `--no-core`, fill them in later:
 
 ```bash
-arcade eject                 # eject every component this project already uses
-arcade eject Bullet Enemy    # eject specific components (+ their deps)
-arcade eject --all --dry-run # preview a full eject, write nothing
+npx arcade core              # download any core component that is missing
 ```
+
+It never overwrites a file, so your edits are safe. Your code imports these
+components from the project copy — `./components/Score/Score.events` for event
+names, `./components/Score/Score.defs` for classes — not from
+`@babylonjsmarket/arcade`.
 
 ### 2. The BabylonJS Market — download more components
 
 The marketplace at [babylonjsmarket.com](https://babylonjsmarket.com) carries
-additional components beyond the bundled set. Some are **free**, some are
-**paid**; once a component is in your account you download it and drop it into
-`src/components/<Name>/` exactly like an ejected one, then register it in
-`src/registry.ts`.
+many more components. Some are **free**, some are **paid**. The
+[`bjs` CLI](/tools/bjs-cli) puts one in your project:
+
+```bash
+bjs download <Name>          # lands in src/components/<Name>/
+```
+
+The same command fetches a fresh copy of any core component.
 
 Either way, there's one default project and you grow it by downloading the
 pieces you actually need — instead of committing to a fixed template at creation
@@ -316,16 +339,16 @@ export default defineConfig({
 });
 ```
 
-### `arcade eject` can't find components
+### A scene says a component is missing
 
-Run it inside a project that has `@babylonjsmarket/arcade` installed (the
-package ships the component source it copies from). If it can't auto-detect what
-your project uses, name the components explicitly or pass `--all`.
+The core download probably failed or was skipped. Run `npx arcade core` in the
+project (after `npm install`). Offline, `npx arcade core --core-from
+<CodeLibrary dir>` copies the set from a local library checkout.
 
 ---
 
 ## Where to Go Next
 
 - **[ECS Framework](/tools/bjs-ecs)** (`@babylonjsmarket/ecs`) — the runtime under everything this scaffold generates: entities, components, systems, the World, the EventBus.
-- **[Arcade Foundations](/tools/bjs-arcade)** (`@babylonjsmarket/arcade`) — the component library `arcade eject` copies from, plus the lazy JSON scene loader.
+- **[Arcade Foundations](/tools/bjs-arcade)** (`@babylonjsmarket/arcade`) — `ArcadeGame`, the viz mount, keyboard input, and the scaffolder itself.
 - **[CLI](/tools/bjs-cli)** (`bjs`) — download marketplace components and assets straight into the project you just scaffolded.

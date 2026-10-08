@@ -27,8 +27,8 @@ project (see below).
 
 Every project starts as a **multigame arcade**: a carpeted room with a row of
 cabinets that you grow into a full arcade. Scenes are TypeScript modules that
-declare entities and their components *by name*; arcade lazy-imports each named
-component the first time it appears. You don't choose a template — you pull in
+declare entities and their components *by name*; each name is a folder in
+`src/components/`, loaded the first time a scene uses it. You don't choose a template — you pull in
 the code you need afterward.
 
 ## Adding Components (download, free or paid)
@@ -81,7 +81,8 @@ my-game/
 
 - **BabylonJS** — 3D engine (with loaders + Havok physics)
 - **@babylonjsmarket/ecs** — Entity-Component-System framework
-- **@babylonjsmarket/arcade** — free component library + `arcade eject`/CLI
+- **@babylonjsmarket/arcade** — `ArcadeGame`, viz mount, keyboard input + the scaffolder CLI
+- **The core components** — 35 free components (meshes, lights, cameras, physics, scoring, …) downloaded into `src/components/`
 - **TypeScript** — type-safe development
 - **Vite** — fast dev server and build (with the Solid plugin for viz panels)
 - **ESLint** — `@babylonjsmarket/eslint-plugin` framework rules

@@ -24,7 +24,7 @@
     },
     {
       "title": "Download Components, Free or Paid",
-      "description": "Pull in the code you actually need instead of committing to a fixed template. 'arcade eject' copies the bundled component library into your project, and the BabylonJS Market offers more components — free or paid — that drop in the same way.",
+      "description": "Pull in the code you actually need instead of committing to a fixed template. The free core components download into your project when it is created, and 'bjs download' pulls in more from the BabylonJS Market — free or paid — as editable source you own.",
       "imagePrompt": "Marketplace grid of game component cards with free and price tags, one card flying into a code editor and becoming editable source files, pink and orange glow on dark background",
       "color": "orange"
     },
